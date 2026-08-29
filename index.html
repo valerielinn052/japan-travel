@@ -890,9 +890,19 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label>金額 (日圓 JPY)</label>
-          <input type="number" id="expAmount" placeholder="請輸入金額" inputmode="numeric">
+        <div class="form-row">
+          <div class="form-group" style="flex: 0 0 110px;">
+            <label>幣種</label>
+            <select id="expCurrency" onchange="updateAmountLabel()">
+              <option value="JPY">🇯🇵 日圓 (JPY)</option>
+              <option value="TWD">🇹🇼 台幣 (TWD)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label id="expAmountLabel">金額 (日圓 JPY)</label>
+            <input type="number" id="expAmount" placeholder="請輸入金額" inputmode="numeric">
+          </div>
         </div>
 
         <div class="form-group">
@@ -923,8 +933,22 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    let expenses = JSON.parse(localStorage.getItem('kyushu_expenses') || '[]');
+    let rawExpenses = JSON.parse(localStorage.getItem('kyushu_expenses') || '[]');
     let currentRate = parseFloat(localStorage.getItem('kyushu_rate') || '0.200');
+
+    // 舊資料相容機制：若舊資料沒有 currency 欄位，預設為 JPY
+    let expenses = rawExpenses.map(item => {
+      const cur = item.currency || 'JPY';
+      let jpyAmt = item.amountJPY;
+      if (jpyAmt === undefined) {
+        jpyAmt = cur === 'TWD' ? (currentRate > 0 ? Math.round(item.amount / currentRate) : item.amount) : item.amount;
+      }
+      return {
+        ...item,
+        currency: cur,
+        amountJPY: jpyAmt
+      };
+    });
 
     document.getElementById('exchangeRate').value = currentRate;
 
@@ -1020,26 +1044,28 @@
     function closeCostSummary() { document.getElementById('costModal').classList.remove('active'); }
 
     function renderCostSummary() {
-      let grandTotal = 0;
-      let pangTotal = 0;
-      let huiTotal = 0;
+      let grandTotalJPY = 0;
+      let pangTotalJPY = 0;
+      let huiTotalJPY = 0;
 
       const dayTotals = { info: 0, day1: 0, day2: 0, day3: 0, day4: 0, day5: 0, day6: 0, day7: 0, day8: 0 };
 
       expenses.forEach(item => {
+        const jpyAmount = item.amountJPY !== undefined ? item.amountJPY : (item.currency === 'TWD' ? Math.round(item.amount / currentRate) : item.amount);
+        
         if (dayTotals[item.dayId] !== undefined) {
-          dayTotals[item.dayId] += item.amount;
+          dayTotals[item.dayId] += jpyAmount;
         }
-        grandTotal += item.amount;
+        grandTotalJPY += jpyAmount;
 
-        if (item.payer === '胖胖') pangTotal += item.amount;
-        else if (item.payer === '惠惠') huiTotal += item.amount;
+        if (item.payer === '胖胖') pangTotalJPY += jpyAmount;
+        else if (item.payer === '惠惠') huiTotalJPY += jpyAmount;
       });
 
-      document.getElementById('grandTotalJPY').innerText = `¥ ${grandTotal.toLocaleString()}`;
-      document.getElementById('grandTotalTWD').innerText = `≈ NT$ ${Math.round(grandTotal * currentRate).toLocaleString()}`;
-      document.getElementById('pangTotal').innerText = `¥${pangTotal.toLocaleString()}`;
-      document.getElementById('huiTotal').innerText = `¥${huiTotal.toLocaleString()}`;
+      document.getElementById('grandTotalJPY').innerText = `¥ ${grandTotalJPY.toLocaleString()}`;
+      document.getElementById('grandTotalTWD').innerText = `≈ NT$ ${Math.round(grandTotalJPY * currentRate).toLocaleString()}`;
+      document.getElementById('pangTotal').innerText = `¥${pangTotalJPY.toLocaleString()} (≈ NT$ ${Math.round(pangTotalJPY * currentRate).toLocaleString()})`;
+      document.getElementById('huiTotal').innerText = `¥${huiTotalJPY.toLocaleString()} (≈ NT$ ${Math.round(huiTotalJPY * currentRate).toLocaleString()})`;
 
       const listContainer = document.getElementById('dayCostList');
       listContainer.innerHTML = '';
@@ -1076,11 +1102,19 @@
     let currentEditingDay = '';
     let currentEditingSpot = '';
 
+    function updateAmountLabel() {
+      const cur = document.getElementById('expCurrency').value;
+      const label = document.getElementById('expAmountLabel');
+      label.innerText = cur === 'JPY' ? '金額 (日圓 JPY)' : '金額 (台幣 TWD)';
+    }
+
     function openExpenseModal(dayId, spotName) {
       currentEditingDay = dayId;
       currentEditingSpot = spotName;
 
       document.getElementById('expModalTitle').innerText = `✏️ 記帳：${spotName}`;
+      document.getElementById('expCurrency').value = 'JPY';
+      updateAmountLabel();
       document.getElementById('expAmount').value = '';
       document.getElementById('expNote').value = '';
       document.getElementById('expenseModal').classList.add('active');
@@ -1095,6 +1129,7 @@
     function saveExpense() {
       const payer = document.getElementById('expPayer').value;
       const category = document.getElementById('expCategory').value;
+      const currency = document.getElementById('expCurrency').value;
       const amount = parseFloat(document.getElementById('expAmount').value);
       const note = document.getElementById('expNote').value.trim();
 
@@ -1103,13 +1138,18 @@
         return;
       }
 
+      // 計算統一的日幣換算金額
+      const amountJPY = currency === 'TWD' ? Math.round(amount / (currentRate || 0.2)) : amount;
+
       const newExpense = {
         id: Date.now(),
         dayId: currentEditingDay,
         spotName: currentEditingSpot,
         payer: payer,
         category: category,
+        currency: currency,
         amount: amount,
+        amountJPY: amountJPY,
         note: note
       };
 
@@ -1141,10 +1181,14 @@
       historyContainer.innerHTML = '<div style="font-size:0.8rem; font-weight:bold; color:#718096; margin-bottom:6px;">此地點已記帳項目：</div>';
       spotExpenses.forEach(exp => {
         const payerTag = exp.payer ? `[${exp.payer}] ` : '';
+        const curSymbol = exp.currency === 'TWD' ? 'NT$' : '¥';
+        const displayAmt = `${curSymbol}${exp.amount.toLocaleString()}`;
+        const conversionNote = exp.currency === 'TWD' ? ` (≈¥${exp.amountJPY.toLocaleString()})` : '';
+        
         historyContainer.innerHTML += `
           <div class="expense-item">
             <div>
-              <span style="color:#c05621; font-weight:bold;">${payerTag}</span><b>${exp.category}</b> ¥${exp.amount.toLocaleString()} ${exp.note ? `(${exp.note})` : ''}
+              <span style="color:#c05621; font-weight:bold;">${payerTag}</span><b>${exp.category}</b> ${displayAmt}${conversionNote} ${exp.note ? `(${exp.note})` : ''}
             </div>
             <span class="expense-item-del" onclick="deleteExpense(${exp.id})">🗑️ 刪除</span>
           </div>
@@ -1152,24 +1196,26 @@
       });
     }
 
-    function renderAllBadges() {
-      document.querySelectorAll('.cost-badge').forEach(badge => {
-        const idParts = badge.id.replace('badge-', '').split('-');
-        const dayId = idParts[0];
-        const spotName = idParts.slice(1).join('-');
+  function renderAllBadges() {
+    document.querySelectorAll('.cost-badge').forEach(badge => {
+      const idParts = badge.id.replace('badge-', '').split('-');
+      const dayId = idParts[0];
+      const spotName = idParts.slice(1).join('-');
 
-        const spotExpenses = expenses.filter(e => e.dayId === dayId && e.spotName === spotName);
-        const total = spotExpenses.reduce((sum, e) => sum + e.amount, 0);
+      const spotExpenses = expenses.filter(e => e.dayId === dayId && e.spotName === spotName);
+      const totalJPY = spotExpenses.reduce((sum, e) => {
+        return sum + (e.amountJPY !== undefined ? e.amountJPY : (e.currency === 'TWD' ? Math.round(e.amount / currentRate) : e.amount));
+      }, 0);
 
-        if (total > 0) {
-          const twd = Math.round(total * currentRate);
-          badge.style.display = 'inline-flex';
-          badge.innerHTML = `💰 已記 ¥${total.toLocaleString()} (NT$ ${twd.toLocaleString()})`;
-        } else {
-          badge.style.display = 'none';
-        }
-      });
-    }
+      if (totalJPY > 0) {
+        const twd = Math.round(totalJPY * currentRate);
+        badge.style.display = 'inline-flex';
+        badge.innerHTML = `💰 已記 ¥${totalJPY.toLocaleString()} (NT$ ${twd.toLocaleString()})`;
+      } else {
+        badge.style.display = 'none';
+      }
+    });
+  }
 
     /* ========== 氣象 API ========== */
     async function fetchKumamotoWeather() {
