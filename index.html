@@ -9,23 +9,25 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       max-width: 600px;
       margin: 0 auto;
-      padding: 20px 15px 80px 15px; /* 底下留 80px 避免內容被底部按鈕遮住 */
+      padding: 20px 15px 90px 15px; /* 底部留出空間給滾動選單 */
       background-color: #f9f9f9;
       color: #333;
     }
     h1 { text-align: center; color: #007bff; margin-bottom: 20px; }
     
-    /* 行程卡片 */
-    .day-content { display: none; } /* 預設隱藏所有天數 */
-    .day-content.active { display: block; } /* 只顯示被選中的天數 */
+    /* 內容頁面控制 */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    .day-card {
+    /* 卡片與通用樣式 */
+    .card {
       background: white;
       border-radius: 12px;
       padding: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
     }
-    .day-title {
+    .card-title {
       font-size: 1.2rem;
       font-weight: bold;
       background: #007bff;
@@ -34,6 +36,15 @@
       border-radius: 8px;
       margin-bottom: 20px;
     }
+    .info-item {
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-label { font-weight: bold; color: #007bff; margin-bottom: 5px; }
+
+    /* 時間軸景點樣式 */
     .spot {
       border-left: 3px solid #007bff;
       padding-left: 15px;
@@ -43,7 +54,7 @@
     .spot-name { font-size: 1.1rem; font-weight: bold; margin: 4px 0; }
     .note { color: #666; font-size: 0.95rem; margin: 0; line-height: 1.5; }
 
-    /* 底部固定導覽列 */
+    /* 底部橫向可滾動選單 */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -51,26 +62,33 @@
       right: 0;
       background: white;
       display: flex;
-      justify-content: space-around;
+      overflow-x: auto; /* 啟用橫向滾動 */
+      white-space: nowrap;
       padding: 10px 15px;
       box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
       max-width: 600px;
       margin: 0 auto;
       z-index: 1000;
+      -webkit-overflow-scrolling: touch; /* 手機平滑滾動 */
     }
+    /* 隱藏滾動條 */
+    .bottom-nav::-webkit-scrollbar { display: none; }
+    .bottom-nav { -ms-overflow-style: none; scrollbar-width: none; }
+
     .nav-btn {
-      flex: 1;
-      margin: 0 5px;
-      padding: 12px 0;
+      flex: 0 0 auto;
+      margin-right: 8px;
+      padding: 10px 16px;
       border: none;
       background: #e9ecef;
       color: #495057;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: bold;
-      border-radius: 8px;
+      border-radius: 20px; /* 膠囊形按鈕 */
       cursor: pointer;
       transition: all 0.2s ease;
     }
+    .nav-btn:last-child { margin-right: 0; }
     .nav-btn.active {
       background: #007bff;
       color: white;
@@ -81,74 +99,104 @@
 
   <h1>✈️ 我的旅遊行程</h1>
 
-  <!-- Day 1 行程 -->
-  <div id="day1" class="day-content active">
-    <div class="day-card">
-      <div class="day-title">Day 1 - 2026/10/10</div>
+  <!-- 1. 資訊頁面 -->
+  <div id="info" class="tab-content active">
+    <div class="card">
+      <div class="card-title">ℹ️ 旅程基本資訊</div>
+      <div class="info-item">
+        <div class="info-label">📅 旅遊日期</div>
+        <div>2026/10/10 - 2026/10/17（8天7夜）</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">🏨 住宿資訊</div>
+        <div>飯店名稱 / 地址 / 電話</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">✈️ 航班資訊</div>
+        <div>去程：XX123 (09:00 - 12:30)<br>回程：XX124 (18:00 - 21:30)</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">📝 備忘錄 / 注意事項</div>
+        <div>護照、eSIM 憑證、外幣現金、插頭轉接頭。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Day 1 至 Day 8 行程區塊 -->
+  <div id="day1" class="tab-content">
+    <div class="card">
+      <div class="card-title">Day 1 - 2026/10/10</div>
       <div class="spot">
         <div class="time">09:00</div>
         <div class="spot-name">桃園國際機場</div>
-        <p class="note">辦理登機手續、領取 eSIM 與換匯。</p>
-      </div>
-      <div class="spot">
-        <div class="time">13:00</div>
-        <div class="spot-name">抵達飯店 Check-in</div>
-        <p class="note">寄放行李，準備出門吃午餐。</p>
+        <p class="note">辦理登機與領取 eSIM。</p>
       </div>
     </div>
   </div>
 
-  <!-- Day 2 行程 -->
-  <div id="day2" class="day-content">
-    <div class="day-card">
-      <div class="day-title">Day 2 - 2026/10/11</div>
+  <div id="day2" class="tab-content">
+    <div class="card">
+      <div class="card-title">Day 2 - 2026/10/11</div>
       <div class="spot">
         <div class="time">10:00</div>
-        <div class="spot-name">著名景點參觀</div>
-        <p class="note">預計停留 2 小時，記得拍照！</p>
-      </div>
-      <div class="spot">
-        <div class="time">18:00</div>
-        <div class="spot-name">當地夜市 / 晚餐</div>
-        <p class="note">品嚐特色美食與小吃。</p>
+        <div class="spot-name">景點 A</div>
+        <p class="note">行程備註...</p>
       </div>
     </div>
   </div>
 
-  <!-- Day 3 行程 -->
-  <div id="day3" class="day-content">
-    <div class="day-card">
-      <div class="day-title">Day 3 - 2026/10/12</div>
-      <div class="spot">
-        <div class="time">11:00</div>
-        <div class="spot-name">最後購物 / 買伴手禮</div>
-        <p class="note">整理行李，準備前往機場。</p>
-      </div>
-    </div>
+  <div id="day3" class="tab-content">
+    <div class="card"><div class="card-title">Day 3 - 2026/10/12</div><p>待規劃行程...</p></div>
   </div>
 
-  <!-- 底部切換按鈕 -->
+  <div id="day4" class="tab-content">
+    <div class="card"><div class="card-title">Day 4 - 2026/10/13</div><p>待規劃行程...</p></div>
+  </div>
+
+  <div id="day5" class="tab-content">
+    <div class="card"><div class="card-title">Day 5 - 2026/10/14</div><p>待規劃行程...</p></div>
+  </div>
+
+  <div id="day6" class="tab-content">
+    <div class="card"><div class="card-title">Day 6 - 2026/10/15</div><p>待規劃行程...</p></div>
+  </div>
+
+  <div id="day7" class="tab-content">
+    <div class="card"><div class="card-title">Day 7 - 2026/10/16</div><p>待規劃行程...</p></div>
+  </div>
+
+  <div id="day8" class="tab-content">
+    <div class="card"><div class="card-title">Day 8 - 2026/10/17</div><p>準備返家...</p></div>
+  </div>
+
+  <!-- 底部 9 個切換按鈕（可橫向滑動） -->
   <div class="bottom-nav">
-    <button class="nav-btn active" onclick="switchDay('day1', this)">Day 1</button>
-    <button class="nav-btn" onclick="switchDay('day2', this)">Day 2</button>
-    <button class="nav-btn" onclick="switchDay('day3', this)">Day 3</button>
+    <button class="nav-btn active" onclick="switchTab('info', this)">ℹ️ 資訊</button>
+    <button class="nav-btn" onclick="switchTab('day1', this)">Day 1</button>
+    <button class="nav-btn" onclick="switchTab('day2', this)">Day 2</button>
+    <button class="nav-btn" onclick="switchTab('day3', this)">Day 3</button>
+    <button class="nav-btn" onclick="switchTab('day4', this)">Day 4</button>
+    <button class="nav-btn" onclick="switchTab('day5', this)">Day 5</button>
+    <button class="nav-btn" onclick="switchTab('day6', this)">Day 6</button>
+    <button class="nav-btn" onclick="switchTab('day7', this)">Day 7</button>
+    <button class="nav-btn" onclick="switchTab('day8', this)">Day 8</button>
   </div>
 
   <script>
-    function switchDay(dayId, btn) {
-      // 隱藏所有行程內容
-      const contents = document.querySelectorAll('.day-content');
+    function switchTab(tabId, btn) {
+      // 隱藏所有頁面
+      const contents = document.querySelectorAll('.tab-content');
       contents.forEach(content => content.classList.remove('active'));
 
       // 移除所有按鈕的高亮狀態
       const buttons = document.querySelectorAll('.nav-btn');
       buttons.forEach(b => b.classList.remove('active'));
 
-      // 顯示點選的天數並高亮該按鈕
-      document.getElementById(dayId).classList.add('active');
+      // 顯示目標頁面並高亮按鈕
+      document.getElementById(tabId).classList.add('active');
       btn.classList.add('active');
 
-      // 切換時自動捲動回頂部
+      // 切換時置頂
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
