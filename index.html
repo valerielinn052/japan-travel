@@ -355,19 +355,19 @@
   <!-- 2. Day 1 行程 -->
   <div id="day1" class="tab-content active">
     
-    <!-- 🌤️ 天氣卡 -->
+    <!-- 🌤️ 即時 API 天氣卡 -->
     <div class="weather-card">
       <div class="weather-info">
-        <span class="weather-location">📍 熊本市 Kumamoto (9/5)</span>
-        <span class="weather-temp">⛅ 21°C - 30°C</span>
-        <span class="weather-detail">晴時多雲 ｜ 降雨機率 30% ｜ 建議隨身帶折傘</span>
+        <span class="weather-location">📍 熊本市 Kumamoto (即時天氣)</span>
+        <span class="weather-temp" id="api-temp">⏳ 連線更新中...</span>
+        <span class="weather-detail" id="api-detail">正在取得氣象資料...</span>
       </div>
-      <div class="weather-icon">⛅</div>
+      <div class="weather-icon" id="api-icon">⛅</div>
     </div>
 
     <!-- 標題 -->
     <div class="card-title">
-      <span>⚓ Day 1</span>
+      <span>⚓ Day 1 熊本海賊王巡禮</span>
       <span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">2026/09/05 (六)</span>
     </div>
 
@@ -497,7 +497,7 @@
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
-            <span class="spot-name">🛍️ AMU PLAZA</span>
+            <span class="spot-name">🛍️ AMU PLAZA 熊本</span>
             <span class="duration-tag">⏱️ 2 hrs</span>
           </div>
           <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
@@ -509,7 +509,7 @@
     <!-- 9. 飯店 -->
     <div class="main-card">
       <div class="time-badge">
-        <span class="time-single">入住</span>
+        <span class="time-single">🏨 入住</span>
       </div>
       <div class="info-content">
         <div class="spot-header">
@@ -525,12 +525,12 @@
     <!-- 10. 晚餐與周邊逛街 -->
     <div class="main-card">
       <div class="time-badge">
-        <span class="time-single">晚餐</span>
+        <span class="time-single">晚餐/逛街</span>
       </div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
-            <span class="spot-name">🍽️ 晚餐 & 周邊購物</span>
+            <span class="spot-name">🍽️ 晚餐 (地點未決定) & 周邊購物</span>
           </div>
         </div>
         <p class="note">
@@ -573,13 +573,13 @@
         <div class="drive-item"><span class="spot-dot">4</span> <b>🏴‍☠️ Chopper Statue</b></div>
         <div class="route-distance-info">🚗 距離約 3.2 KM ｜ 車程約 10 分鐘</div>
         
-        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ Rufi Statue (Teresa飯店)</b></div>
+        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ Rufi Statue (熊本縣廳/Teresa飯店)</b></div>
         <div class="route-distance-info">🚗 距離約 21.0 KM ｜ 車程約 40 分鐘</div>
         
-        <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ Jinbe Statue</b></div>
+        <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ Jinbe Statue (長部田海床路)</b></div>
         <div class="route-distance-info">🚗 距離約 17.5 KM ｜ 車程約 30 分鐘</div>
         
-        <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA</b></div>
+        <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA 熊本</b></div>
         <div class="route-distance-info">🚗 距離約 2.8 KM ｜ 車程約 10 分鐘</div>
         
         <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA KUMAMOTO</b></div>
@@ -638,6 +638,57 @@
     function closeDayMap() {
       document.getElementById('mapModal').classList.remove('active');
     }
+
+    // ========== 串接 Open-Meteo 免費氣象 API (熊本市) ==========
+    async function fetchKumamotoWeather() {
+      const lat = 32.7898;
+      const lng = 130.6886;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        const currentTemp = Math.round(data.current_weather.temperature);
+        const maxTemp = Math.round(data.daily.temperature_2m_max[0]);
+        const minTemp = Math.round(data.daily.temperature_2m_min[0]);
+        const weatherCode = data.current_weather.weathercode;
+
+        // 轉換 WMO 天氣代碼與圖示
+        let weatherText = "晴朗";
+        let weatherIcon = "☀️";
+
+        if (weatherCode === 1 || weatherCode === 2 || weatherCode === 3) {
+          weatherText = "多雲 / 晴時多雲";
+          weatherIcon = "⛅";
+        } else if (weatherCode >= 45 && weatherCode <= 48) {
+          weatherText = "有霧";
+          weatherIcon = "🌫️";
+        } else if (weatherCode >= 51 && weatherCode <= 67) {
+          weatherText = "有雨";
+          weatherIcon = "🌧️";
+        } else if (weatherCode >= 80 && weatherCode <= 82) {
+          weatherText = "陣雨";
+          weatherIcon = "🌦️";
+        } else if (weatherCode >= 95) {
+          weatherText = "雷雨";
+          weatherIcon = "🌩️";
+        }
+
+        // 更新 DOM
+        document.getElementById('api-temp').innerText = `${weatherIcon} ${currentTemp}°C (${minTemp}°C - ${maxTemp}°C)`;
+        document.getElementById('api-detail').innerText = `${weatherText} ｜ 即時自動連線更新`;
+        document.getElementById('api-icon').innerText = weatherIcon;
+
+      } catch (error) {
+        console.error("無法取得氣象資料:", error);
+        document.getElementById('api-temp').innerText = "⛅ 21°C - 30°C";
+        document.getElementById('api-detail').innerText = "天氣資訊取得失敗，顯示預設值";
+      }
+    }
+
+    // 頁面載入時自動執行
+    window.addEventListener('DOMContentLoaded', fetchKumamotoWeather);
   </script>
 
 </body>
