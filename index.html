@@ -714,7 +714,7 @@
           <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
         <p class="note">★ 營業時間：10:00 ~ 20:00<br>▲ 海賊王商店 6F</p>
-        <div class="cost-badge" id="badge-day1-AMU PLAZA 熊本"></div>
+        <div class="cost-badge" id="badge-day1-AMU PLAZA"></div>
       </div>
     </div>
 
@@ -1120,7 +1120,7 @@
       document.getElementById('huiTotal').innerText = `NT$ ${huiTotalTWD.toLocaleString()} (≈ ¥${huiTotalJPY.toLocaleString()})`;
 
       // 渲染圓餅圖
-      renderPieChart(categoryTotalsTWD);
+      renderPieChart(categoryTotalsTWD, grandTotalTWD);
 
       const listContainer = document.getElementById('dayCostList');
       listContainer.innerHTML = '';
@@ -1152,14 +1152,39 @@
       });
     }
 
-    function renderPieChart(categoryData) {
+    function renderPieChart(categoryData, totalAmount) {
       const ctx = document.getElementById('categoryPieChart').getContext('2d');
-      const labels = Object.keys(categoryData);
-      const dataValues = Object.values(categoryData);
-
+      
       if (categoryChart) {
         categoryChart.destroy();
       }
+
+      // 若尚無任何消費紀錄，繪製預設灰階佔位圓餅圖
+      if (totalAmount === 0) {
+        categoryChart = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['尚無消費資料'],
+            datasets: [{
+              data: [1],
+              backgroundColor: ['#e2e8f0'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+              legend: { position: 'bottom' },
+              tooltip: { enabled: false }
+            }
+          }
+        });
+        return;
+      }
+
+      const labels = Object.keys(categoryData);
+      const dataValues = Object.values(categoryData);
 
       categoryChart = new Chart(ctx, {
         type: 'pie',
@@ -1194,7 +1219,8 @@
               callbacks: {
                 label: function(context) {
                   const val = context.raw || 0;
-                  return ` ${context.label}: NT$ ${val.toLocaleString()}`;
+                  const percentage = ((val / totalAmount) * 100).toFixed(1);
+                  return ` ${context.label}: NT$ ${val.toLocaleString()} (${percentage}%)`;
                 }
               }
             }
