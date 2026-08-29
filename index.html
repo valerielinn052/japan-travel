@@ -32,25 +32,40 @@
       text-align: center; 
       color: #2b6cb0; 
       font-size: 1.5rem;
-      margin: 0 0 10px 0; 
+      margin: 0 0 12px 0; 
       text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
     }
-    .map-btn {
-      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+    
+    /* 按鈕平行排列區 */
+    .header-btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .map-btn, .calc-btn {
       color: white;
       border: none;
-      padding: 8px 16px;
-      font-size: 0.9rem;
+      padding: 8px 14px;
+      font-size: 0.88rem;
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       transition: all 0.2s ease;
     }
-    .map-btn:active {
+    .map-btn {
+      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+    }
+    .calc-btn {
+      background: linear-gradient(135deg, #38a169, #276749);
+      box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+    }
+    .map-btn:active, .calc-btn:active {
       transform: scale(0.95);
     }
     
@@ -58,7 +73,7 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* ========== 地圖 Modal 彈窗 ========== */
+    /* ========== Modal 通用彈窗 ========== */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -91,6 +106,9 @@
       justify-content: space-between;
       align-items: center;
       font-weight: bold;
+    }
+    .modal-header.calc-header {
+      background: linear-gradient(135deg, #276749, #1c4532);
     }
     .modal-close {
       background: rgba(255,255,255,0.2);
@@ -155,6 +173,74 @@
       color: #64748b;
       line-height: 1.6;
     }
+
+    /* ========== 匯率計算機樣式 ========== */
+    .calc-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+      background: #f8fafc;
+      overflow-y: auto;
+    }
+    .rate-setting {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #edf2f7;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .rate-setting input {
+      width: 75px;
+      text-align: right;
+      padding: 4px 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .calc-display {
+      background: #1e293b;
+      color: white;
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .calc-label { font-size: 0.85rem; color: #94a3b8; }
+    .calc-val { font-size: 1.4rem; font-weight: 800; word-break: break-all; }
+    .calc-val.twd { color: #4ade80; }
+
+    .calc-keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: auto;
+    }
+    .key-btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 14px 0;
+      font-size: 1.15rem;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+      transition: background 0.1s;
+    }
+    .key-btn:active { background: #e2e8f0; }
+    .key-btn.op { background: #feebc8; color: #c05621; border-color: #fbd38d; }
+    .key-btn.clear { background: #fed7d7; color: #9b2c2c; border-color: #feb2b2; }
+    .key-btn.eq { background: #38a169; color: white; border-color: #276749; grid-column: span 2; }
 
     /* ========== 頂部毛玻璃天氣卡 ========== */
     .weather-card {
@@ -334,8 +420,11 @@
 <body>
 
   <div class="header-container">
-    <h1>🐻 胖胖旅行團之九州篇🐻</h1>
-    <button class="map-btn" onclick="openDayMap()">🗺️ 查看今日全景路線圖</button>
+    <h1>🏴‍☠️ 胖胖旅行團之九州篇</h1>
+    <div class="header-btn-group">
+      <button class="map-btn" onclick="openDayMap()">🗺️ 查看今日全景路線圖</button>
+      <button class="calc-btn" onclick="openCalc()">🧮 匯率計算機</button>
+    </div>
   </div>
 
   <!-- 1. 資訊頁面 -->
@@ -367,7 +456,7 @@
 
     <!-- 標題 -->
     <div class="card-title">
-      <span>⚓ Day 1</span>
+      <span>⚓ Day 1 熊本海賊王巡禮</span>
       <span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">2026/09/05 (六)</span>
     </div>
 
@@ -497,7 +586,7 @@
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
-            <span class="spot-name">🛍️ AMU PLAZA</span>
+            <span class="spot-name">🛍️ AMU PLAZA 熊本</span>
             <span class="duration-tag">⏱️ 2 hrs</span>
           </div>
           <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
@@ -509,7 +598,7 @@
     <!-- 9. 飯店 -->
     <div class="main-card">
       <div class="time-badge">
-        <span class="time-single">入住</span>
+        <span class="time-single">🏨 入住</span>
       </div>
       <div class="info-content">
         <div class="spot-header">
@@ -525,12 +614,12 @@
     <!-- 10. 晚餐與周邊逛街 -->
     <div class="main-card">
       <div class="time-badge">
-        <span class="time-single">逛街</span>
+        <span class="time-single">晚餐/逛街</span>
       </div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
-            <span class="spot-name">🍽️ 晚餐 & 周邊購物</span>
+            <span class="spot-name">🍽️ 晚餐 (地點未決定) & 周邊購物</span>
           </div>
         </div>
         <p class="note">
@@ -573,16 +662,72 @@
         <div class="drive-item"><span class="spot-dot">4</span> <b>🏴‍☠️ Chopper Statue</b></div>
         <div class="route-distance-info">🚗 距離約 3.2 KM ｜ 車程約 10 分鐘</div>
         
-        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ Rufi Statue (Teresa飯店)</b></div>
+        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ Rufi Statue (熊本縣廳/Teresa飯店)</b></div>
         <div class="route-distance-info">🚗 距離約 21.0 KM ｜ 車程約 40 分鐘</div>
         
-        <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ Jinbe Statue</b></div>
+        <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ Jinbe Statue (長部田海床路)</b></div>
         <div class="route-distance-info">🚗 距離約 17.5 KM ｜ 車程約 30 分鐘</div>
         
-        <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA</b></div>
+        <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA 熊本</b></div>
         <div class="route-distance-info">🚗 距離約 2.8 KM ｜ 車程約 10 分鐘</div>
         
         <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA KUMAMOTO</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🧮 匯率計算機 Modal 彈窗 -->
+  <div class="modal-overlay" id="calcModal">
+    <div class="modal-container" style="height: auto; max-height: 90vh;">
+      <div class="modal-header calc-header">
+        <span>🧮 匯率與費用計算機</span>
+        <button class="modal-close" onclick="closeCalc()">✕</button>
+      </div>
+      <div class="calc-body">
+        
+        <div class="rate-setting">
+          <span>日圓對台幣匯率 (1 JPY =)</span>
+          <div>
+            <input type="number" id="exchangeRate" value="0.200" step="0.001" oninput="calculateExchange()"> NT$
+          </div>
+        </div>
+
+        <div class="calc-display">
+          <div class="calc-row">
+            <span class="calc-label">日圓 (JPY)</span>
+            <span class="calc-val" id="jpyDisplay">0</span>
+          </div>
+          <div class="calc-row" style="margin-bottom:0;">
+            <span class="calc-label">約合台幣 (TWD)</span>
+            <span class="calc-val twd" id="twdDisplay">NT$ 0</span>
+          </div>
+        </div>
+
+        <div class="calc-keypad">
+          <button class="key-btn clear" onclick="pressCalc('C')">C</button>
+          <button class="key-btn op" onclick="pressCalc('⌫')">⌫</button>
+          <button class="key-btn op" onclick="pressCalc('/')">÷</button>
+          <button class="key-btn op" onclick="pressCalc('*')">×</button>
+
+          <button class="key-btn" onclick="pressCalc('7')">7</button>
+          <button class="key-btn" onclick="pressCalc('8')">8</button>
+          <button class="key-btn" onclick="pressCalc('9')">9</button>
+          <button class="key-btn op" onclick="pressCalc('-')">-</button>
+
+          <button class="key-btn" onclick="pressCalc('4')">4</button>
+          <button class="key-btn" onclick="pressCalc('5')">5</button>
+          <button class="key-btn" onclick="pressCalc('6')">6</button>
+          <button class="key-btn op" onclick="pressCalc('+')">+</button>
+
+          <button class="key-btn" onclick="pressCalc('1')">1</button>
+          <button class="key-btn" onclick="pressCalc('2')">2</button>
+          <button class="key-btn" onclick="pressCalc('3')">3</button>
+          <button class="key-btn eq" onclick="pressCalc('=')" style="grid-row: span 2; height: 100%;">=</button>
+
+          <button class="key-btn" onclick="pressCalc('0')" style="grid-column: span 2;">0</button>
+          <button class="key-btn" onclick="pressCalc('.')">.</button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -606,6 +751,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    /* ========== 地圖控制 ========== */
     let map = null;
     const day1Spots = [
       { name: "1. budget 租車 (熊本機場)", lat: 32.8364, lng: 130.8525 },
@@ -614,7 +760,7 @@
       { name: "4. 🏴‍☠️ Chopper Statue", lat: 32.7788, lng: 130.7511 },
       { name: "5. 🏴‍☠️ Rufi Statue", lat: 32.7894, lng: 130.7416 },
       { name: "6. 🏴‍☠️ Jinbe Statue", lat: 32.6953, lng: 130.6033 },
-      { name: "7. 🛍️ AMU PLAZA", lat: 32.7898, lng: 130.6886 },
+      { name: "7. 🛍️ AMU PLAZA 熊本", lat: 32.7898, lng: 130.6886 },
       { name: "8. 🏨 SOTETSU GRAND FRESA", lat: 32.8016, lng: 130.7078 }
     ];
 
@@ -639,6 +785,57 @@
       document.getElementById('mapModal').classList.remove('active');
     }
 
+    /* ========== 匯率計算機邏輯 ========== */
+    let calcExpr = "0";
+
+    function openCalc() {
+      document.getElementById('calcModal').classList.add('active');
+    }
+    function closeCalc() {
+      document.getElementById('calcModal').classList.remove('active');
+    }
+
+    function pressCalc(val) {
+      if (val === 'C') {
+        calcExpr = "0";
+      } else if (val === '⌫') {
+        calcExpr = calcExpr.length > 1 ? calcExpr.slice(0, -1) : "0";
+      } else if (val === '=') {
+        try {
+          // 安全評估表達式
+          let sanitized = calcExpr.replace(/[^0-9+\-*/.]/g, '');
+          calcExpr = String(eval(sanitized) || 0);
+        } catch {
+          calcExpr = "Error";
+        }
+      } else {
+        if (calcExpr === "0" || calcExpr === "Error") {
+          calcExpr = val;
+        } else {
+          calcExpr += val;
+        }
+      }
+      updateCalcDisplay();
+    }
+
+    function updateCalcDisplay() {
+      document.getElementById('jpyDisplay').innerText = calcExpr;
+      calculateExchange();
+    }
+
+    function calculateExchange() {
+      const rate = parseFloat(document.getElementById('exchangeRate').value) || 0.2;
+      let jpyVal = 0;
+      try {
+        let sanitized = calcExpr.replace(/[^0-9+\-*/.]/g, '');
+        jpyVal = eval(sanitized) || 0;
+      } catch {
+        jpyVal = 0;
+      }
+      const twdVal = Math.round(jpyVal * rate);
+      document.getElementById('twdDisplay').innerText = `NT$ ${twdVal.toLocaleString()}`;
+    }
+
     // ========== 串接 Open-Meteo 免費氣象 API (熊本市) ==========
     async function fetchKumamotoWeather() {
       const lat = 32.7898;
@@ -654,7 +851,6 @@
         const minTemp = Math.round(data.daily.temperature_2m_min[0]);
         const weatherCode = data.current_weather.weathercode;
 
-        // 轉換 WMO 天氣代碼與圖示
         let weatherText = "晴朗";
         let weatherIcon = "☀️";
 
@@ -675,7 +871,6 @@
           weatherIcon = "🌩️";
         }
 
-        // 更新 DOM
         document.getElementById('api-temp').innerText = `${weatherIcon} ${currentTemp}°C (${minTemp}°C - ${maxTemp}°C)`;
         document.getElementById('api-detail').innerText = `${weatherText} ｜ 即時自動連線更新`;
         document.getElementById('api-icon').innerText = weatherIcon;
@@ -687,7 +882,6 @@
       }
     }
 
-    // 頁面載入時自動執行
     window.addEventListener('DOMContentLoaded', fetchKumamotoWeather);
   </script>
 
