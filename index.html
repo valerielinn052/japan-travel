@@ -39,33 +39,30 @@
     /* 按鈕平行排列區 */
     .header-btn-group {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       justify-content: center;
       width: 100%;
       flex-wrap: wrap;
     }
-    .map-btn, .calc-btn {
+    .map-btn, .calc-btn, .cost-btn {
       color: white;
       border: none;
-      padding: 8px 14px;
-      font-size: 0.88rem;
+      padding: 8px 12px;
+      font-size: 0.82rem;
       font-weight: bold;
       border-radius: 20px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
       transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .map-btn {
-      background: linear-gradient(135deg, #3182ce, #2b6cb0);
-      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
-    }
-    .calc-btn {
-      background: linear-gradient(135deg, #38a169, #276749);
-      box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
-    }
-    .map-btn:active, .calc-btn:active {
+    .map-btn { background: linear-gradient(135deg, #3182ce, #2b6cb0); }
+    .calc-btn { background: linear-gradient(135deg, #38a169, #276749); }
+    .cost-btn { background: linear-gradient(135deg, #d69e2e, #b7791f); }
+    
+    .map-btn:active, .calc-btn:active, .cost-btn:active {
       transform: scale(0.95);
     }
     
@@ -91,7 +88,7 @@
       background: white;
       width: 100%;
       max-width: 560px;
-      height: 85vh;
+      max-height: 88vh;
       border-radius: 20px;
       display: flex;
       flex-direction: column;
@@ -107,9 +104,10 @@
       align-items: center;
       font-weight: bold;
     }
-    .modal-header.calc-header {
-      background: linear-gradient(135deg, #276749, #1c4532);
-    }
+    .modal-header.calc-header { background: linear-gradient(135deg, #276749, #1c4532); }
+    .modal-header.cost-header { background: linear-gradient(135deg, #b7791f, #744210); }
+    .modal-header.expense-header { background: linear-gradient(135deg, #dd6b20, #9c4221); }
+
     .modal-close {
       background: rgba(255,255,255,0.2);
       border: none;
@@ -126,17 +124,16 @@
 
     #map {
       width: 100%;
-      height: 55%;
+      height: 250px;
       z-index: 1;
     }
 
     /* 地圖下方資訊區 */
     .route-info-panel {
-      height: 45%;
-      background: #f8fafc;
       padding: 14px 16px;
       overflow-y: auto;
       border-top: 2px solid #e2e8f0;
+      background: #f8fafc;
     }
     .route-title {
       font-size: 0.95rem;
@@ -149,7 +146,6 @@
       align-items: center;
       margin: 8px 0 2px 0;
       font-size: 0.88rem;
-      color: #2d3748;
     }
     .spot-dot {
       width: 22px; 
@@ -179,8 +175,7 @@
       padding: 18px;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      justify-content: space-between;
+      gap: 12px;
       background: #f8fafc;
       overflow-y: auto;
     }
@@ -193,7 +188,6 @@
       border-radius: 10px;
       font-size: 0.85rem;
       font-weight: bold;
-      margin-bottom: 10px;
     }
     .rate-setting input {
       width: 75px;
@@ -208,7 +202,6 @@
       color: white;
       border-radius: 14px;
       padding: 12px 16px;
-      margin-bottom: 12px;
     }
     .calc-row {
       display: flex;
@@ -224,23 +217,122 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      margin-top: auto;
     }
     .key-btn {
       background: white;
       border: 1px solid #cbd5e1;
-      padding: 14px 0;
-      font-size: 1.15rem;
+      padding: 12px 0;
+      font-size: 1.1rem;
       font-weight: bold;
       border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-      transition: background 0.1s;
     }
     .key-btn:active { background: #e2e8f0; }
     .key-btn.op { background: #feebc8; color: #c05621; border-color: #fbd38d; }
     .key-btn.clear { background: #fed7d7; color: #9b2c2c; border-color: #feb2b2; }
     .key-btn.eq { background: #38a169; color: white; border-color: #276749; grid-column: span 2; }
+
+    /* ========== 8天總費用 Modal 樣式 ========== */
+    .cost-summary-body {
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #f8fafc;
+    }
+    .total-cost-card {
+      background: linear-gradient(135deg, #d69e2e, #b7791f);
+      color: white;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(183, 121, 31, 0.3);
+      text-align: center;
+    }
+    .total-cost-title { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
+    .total-cost-jpy { font-size: 1.8rem; font-weight: 900; }
+    .total-cost-twd { font-size: 1.1rem; opacity: 0.95; font-weight: bold; margin-top: 2px; }
+
+    .day-cost-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .day-cost-item {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+    }
+    .day-cost-item .day-label { font-weight: bold; color: #2d3748; }
+    .day-cost-item .day-val { font-weight: bold; color: #d69e2e; text-align: right; }
+    .day-cost-item .day-twd { font-size: 0.75rem; color: #718096; font-weight: normal; }
+
+    /* ========== 記帳彈窗 Modal 樣式 ========== */
+    .expense-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: #fff;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #4a5568;
+    }
+    .form-group input, .form-group select {
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus {
+      border-color: #dd6b20;
+    }
+    .expense-list {
+      margin-top: 10px;
+      max-height: 160px;
+      overflow-y: auto;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+    }
+    .expense-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed #edf2f7;
+      font-size: 0.85rem;
+    }
+    .expense-item-del {
+      color: #e53e3e;
+      cursor: pointer;
+      font-weight: bold;
+      padding: 2px 6px;
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #dd6b20, #c05621);
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(221, 107, 32, 0.3);
+    }
 
     /* ========== 頂部毛玻璃天氣卡 ========== */
     .weather-card {
@@ -257,7 +349,7 @@
       justify-content: space-between;
     }
     .weather-info { display: flex; flex-direction: column; }
-    .weather-location { font-size: 0.85rem; font-weight: bold; color: #4a5568; letter-spacing: 0.5px; }
+    .weather-location { font-size: 0.85rem; font-weight: bold; color: #4a5568; }
     .weather-temp { font-size: 1.4rem; font-weight: 800; color: #2b6cb0; margin: 2px 0; }
     .weather-detail { font-size: 0.78rem; color: #718096; }
     .weather-icon { font-size: 2.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
@@ -279,15 +371,17 @@
 
     /* ========== 大方塊內嵌時間卡片架構 ========== */
     .main-card {
+      position: relative;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       padding: 12px 14px;
       background-color: #ffffff;
       border: 1px solid #e5e7eb;
       border-radius: 16px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       margin-bottom: 12px;
+      cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .main-card:hover {
@@ -295,10 +389,10 @@
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     }
 
-    /* 左側：單一時間小方塊 */
+    /* 左側：時間小方塊 */
     .time-badge {
       flex-shrink: 0;
-      width: 70px;
+      width: 65px;
       height: 52px;
       background-color: #eff6ff;
       border: 1px solid #dbeafe;
@@ -309,7 +403,7 @@
       padding: 4px;
     }
     .time-single {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: #2563eb;
     }
@@ -320,13 +414,14 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding-right: 5px;
     }
 
     .spot-header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 8px;
+      align-items: flex-start;
+      gap: 6px;
     }
     .spot-title-group {
       display: flex;
@@ -340,22 +435,19 @@
       color: #1a202c;
     }
     .duration-tag {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #4b5563;
       background-color: #f3f4f6;
       border: 1px solid #e5e7eb;
       padding: 2px 6px;
       border-radius: 6px;
       font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
     }
     .map-link {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 16px;
+      padding: 3px 8px;
+      border-radius: 14px;
       text-decoration: none;
       background-color: #ebf8ff;
       color: #2b6cb0;
@@ -369,18 +461,34 @@
       line-height: 1.4;
     }
 
+    /* 記帳標籤 Badge */
+    .cost-badge {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: #fefcbf;
+      color: #744210;
+      border: 1px solid #fbd38d;
+      align-self: flex-start;
+    }
+
     /* ========== 底部彩色滾動選單 ========== */
     .bottom-nav {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
       overflow-x: auto;
       white-space: nowrap;
-      padding: 10px 15px;
+      padding: 10px 12px;
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
       max-width: 600px;
       margin: 0 auto;
@@ -392,18 +500,18 @@
 
     .nav-btn {
       flex: 0 0 auto;
-      margin-right: 8px;
-      padding: 6px 14px;
+      margin-right: 6px;
+      padding: 6px 12px;
       border: none;
       background: #edf2f7;
       color: #4a5568;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: bold;
       border-radius: 16px;
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: center;
-      line-height: 1.3;
+      line-height: 1.2;
     }
     .nav-btn:last-child { margin-right: 0; }
     .nav-btn.active {
@@ -412,7 +520,7 @@
       box-shadow: 0 3px 10px rgba(255, 126, 95, 0.4);
     }
     .nav-btn .sub-text {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       display: block;
     }
   </style>
@@ -422,222 +530,205 @@
   <div class="header-container">
     <h1>🏴‍☠️ 胖胖旅行團之九州篇</h1>
     <div class="header-btn-group">
-      <button class="map-btn" onclick="openDayMap()">🗺️ 查看今日全景路線圖</button>
-      <button class="calc-btn" onclick="openCalc()">🧮 匯率計算機</button>
+      <button class="map-btn" onclick="openDayMap()">🗺️ 路線圖</button>
+      <button class="calc-btn" onclick="openCalc()">🧮 換算</button>
+      <button class="cost-btn" onclick="openCostSummary()">💰 8天總費用</button>
     </div>
   </div>
 
-  <!-- 1. 資訊頁面 -->
+  <!-- 0. 資訊頁面 -->
   <div id="info" class="tab-content">
     <div class="card-title">ℹ️ 重要旅遊資訊</div>
-    <div class="main-card">
+    <div class="main-card" onclick="openExpenseModal('info', '旅遊備忘錄')">
       <div class="time-badge">
         <span class="time-single">備忘</span>
       </div>
       <div class="info-content">
         <div class="spot-name">📝 旅遊備忘錄</div>
-        <p class="note">請在此填寫行前準備、護照號碼或緊急聯絡電話...</p>
+        <p class="note">點擊此處可記錄預備支出與雜項。</p>
+        <div class="cost-badge" id="badge-info-旅遊備忘錄">💵 + 記帳</div>
       </div>
     </div>
   </div>
 
-  <!-- 2. Day 1 行程 -->
+  <!-- 1. Day 1 行程 -->
   <div id="day1" class="tab-content active">
     
     <!-- 🌤️ 即時 API 天氣卡 -->
     <div class="weather-card">
       <div class="weather-info">
-        <span class="weather-location">📍 熊本市 Kumamoto (即時天氣)</span>
+        <span class="weather-location">📍 熊本市 Kumamoto (即時氣象)</span>
         <span class="weather-temp" id="api-temp">⏳ 連線更新中...</span>
         <span class="weather-detail" id="api-detail">正在取得氣象資料...</span>
       </div>
       <div class="weather-icon" id="api-icon">⛅</div>
     </div>
 
-    <!-- 標題 -->
     <div class="card-title">
       <span>⚓ Day 1 熊本海賊王巡禮</span>
       <span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">2026/09/05 (六)</span>
     </div>
 
     <!-- 1. 航班 -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">05:00</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', '桃園國際機場')">
+      <div class="time-badge"><span class="time-single">05:00</span></div>
       <div class="info-content">
         <div class="spot-header">
-          <div class="spot-title-group">
-            <span class="spot-name">✈️ 桃園國際機場 (第一航廈)</span>
-          </div>
-          <a href="https://maps.google.com/?q=桃園國際機場第一航廈" target="_blank" class="map-link">📍 地圖</a>
+          <div class="spot-title-group"><span class="spot-name">✈️ 桃園國際機場 (第一航廈)</span></div>
+          <a href="https://maps.google.com/?q=桃園國際機場第一航廈" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
         <p class="note">★ 航班資訊：星宇航空 TPE - KMJ (07:30 ~ 10:45)</p>
+        <div class="cost-badge" id="badge-day1-桃園國際機場">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 2. 租車 -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">11:45</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'budget 租車')">
+      <div class="time-badge"><span class="time-single">11:45</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🚗 budget 租車</span>
-            <span class="duration-tag">⏱️ 45 mins</span>
+            <span class="duration-tag">⏱️ 45m</span>
           </div>
-          <a href="https://maps.google.com/?q=Budget+Rent+a+Car+Kumamoto+Airport" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=Budget+Rent+a+Car+Kumamoto+Airport" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 機場入境後左轉 ➔ sorayoka餐廳區 ➔ sorayoka公園(外面) ➔ sorayoka遊客中心(尋找租車櫃台)<br>★ 櫃台協助聯絡接駁車 (搭乘時間約5分鐘)<br>▲ 預約 12:00 (未租ETC)</p>
+        <p class="note">★ 機場入境後左轉 ➔ sorayoka遊客中心<br>▲ 預約 12:00 (未租ETC)</p>
+        <div class="cost-badge" id="badge-day1-budget 租車">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 3. Sanji Statue -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">12:40</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'Sanji Statue')">
+      <div class="time-badge"><span class="time-single">12:40</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🏴‍☠️ Sanji Statue</span>
-            <span class="duration-tag">⏱️ 30 mins</span>
+            <span class="duration-tag">⏱️ 30m</span>
           </div>
-          <a href="https://maps.google.com/?q=Sanji+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=Sanji+Statue+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
         <p class="note">★ 營業時間：09:00 ~ 20:00 (每週一休息)</p>
+        <div class="cost-badge" id="badge-day1-Sanji Statue">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 4. Brook Statue -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">13:25</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'Brook Statue')">
+      <div class="time-badge"><span class="time-single">13:25</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🏴‍☠️ Brook Statue</span>
-            <span class="duration-tag">⏱️ 30 mins</span>
+            <span class="duration-tag">⏱️ 30m</span>
           </div>
-          <a href="https://maps.google.com/?q=Brook+Statue+Mifune" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=Brook+Statue+Mifune" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
         <p class="note">★ 營業時間：09:00 ~ 17:00 (每週一、四休息)</p>
+        <div class="cost-badge" id="badge-day1-Brook Statue">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 5. Chopper Statue -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">14:15</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'Chopper Statue')">
+      <div class="time-badge"><span class="time-single">14:15</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🏴‍☠️ Chopper Statue</span>
-            <span class="duration-tag">⏱️ 30 mins</span>
+            <span class="duration-tag">⏱️ 30m</span>
           </div>
-          <a href="https://maps.google.com/?q=Chopper+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=Chopper+Statue+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
         <p class="note">★ 營業時間：09:00 ~ 16:30 (每週一、二休息)</p>
+        <div class="cost-badge" id="badge-day1-Chopper Statue">💵 + 記帳</div>
       </div>
     </div>
 
-    <!-- 6. Luffy Statue (Rufi statue) -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">14:55</span>
-      </div>
+    <!-- 6. Rufi Statue -->
+    <div class="main-card" onclick="openExpenseModal('day1', 'Rufi Statue')">
+      <div class="time-badge"><span class="time-single">14:55</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🏴‍☠️ Rufi Statue</span>
-            <span class="duration-tag">⏱️ 30 mins</span>
+            <span class="duration-tag">⏱️ 30m</span>
           </div>
-          <a href="https://maps.google.com/?q=Luffy+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=Luffy+Statue+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 營業時間：09:00 ~ 16:30 (Teresa飯店大廳)<br>▲ 銅像步行 3 分鐘</p>
+        <p class="note">★ 營業時間：09:00 ~ 16:30 (Teresa飯店大廳)</p>
+        <div class="cost-badge" id="badge-day1-Rufi Statue">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 7. Jinbe Statue -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">16:05</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'Jinbe Statue')">
+      <div class="time-badge"><span class="time-single">16:05</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🏴‍☠️ Jinbe Statue</span>
-            <span class="duration-tag">⏱️ 40 mins</span>
+            <span class="duration-tag">⏱️ 40m</span>
           </div>
-          <a href="https://maps.google.com/?q=Jinbe+Statue+Uto" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=Jinbe+Statue+Uto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 營業時間：10:00 ~ 19:00<br>★ 長部田海床路</p>
+        <p class="note">★ 長部田海床路 (營業時間：10:00 ~ 19:00)</p>
+        <div class="cost-badge" id="badge-day1-Jinbe Statue">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 8. AMU PLAZA -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">17:15</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'AMU PLAZA 熊本')">
+      <div class="time-badge"><span class="time-single">17:15</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🛍️ AMU PLAZA 熊本</span>
             <span class="duration-tag">⏱️ 2 hrs</span>
           </div>
-          <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
+          <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 營業時間：10:00 ~ 20:00<br>▲ 海賊王商店 6F</p>
+        <p class="note">★ 海賊王商店 6F (10:00 ~ 20:00)</p>
+        <div class="cost-badge" id="badge-day1-AMU PLAZA 熊本">💵 + 記帳</div>
       </div>
     </div>
 
     <!-- 9. 飯店 -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">🏨 入住</span>
-      </div>
+    <div class="main-card" onclick="openExpenseModal('day1', 'SOTETSU GRAND FRESA')">
+      <div class="time-badge"><span class="time-single">🏨 入住</span></div>
       <div class="info-content">
         <div class="spot-header">
-          <div class="spot-title-group">
-            <span class="spot-name">🏨 SOTETSU GRAND FRESA KUMAMOTO</span>
-          </div>
-          <a href="https://maps.google.com/?q=SOTETSU+GRAND+FRESA+KUMAMOTO" target="_blank" class="map-link">📍 地圖</a>
+          <div class="spot-title-group"><span class="spot-name">🏨 SOTETSU GRAND FRESA</span></div>
+          <a href="https://maps.google.com/?q=SOTETSU+GRAND+FRESA+KUMAMOTO" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ Check-in 時間：15:00 ~ 24:00<br>▲ 早餐時段：06:30 ~ 09:30</p>
+        <p class="note">★ Check-in 15:00 ~ 24:00</p>
+        <div class="cost-badge" id="badge-day1-SOTETSU GRAND FRESA">💵 + 記帳</div>
       </div>
     </div>
 
-    <!-- 10. 晚餐與周邊逛街 -->
-    <div class="main-card">
-      <div class="time-badge">
-        <span class="time-single">晚餐/逛街</span>
-      </div>
+    <!-- 10. 晚餐 -->
+    <div class="main-card" onclick="openExpenseModal('day1', '晚餐/購物')">
+      <div class="time-badge"><span class="time-single">晚餐</span></div>
       <div class="info-content">
         <div class="spot-header">
-          <div class="spot-title-group">
-            <span class="spot-name">🍽️ 晚餐 (地點未決定) & 周邊購物</span>
-          </div>
+          <div class="spot-title-group"><span class="spot-name">🍽️ 晚餐 & 周邊購物</span></div>
         </div>
-        <p class="note">
-          ★ 飯店附近商店營業時間：<br>
-          ① JINS：10:00 ~ 20:00<br>
-          ② COCOSA：11:00 ~ 20:00<br>
-          ③ Carino：10:00 ~ 23:00 (部分到 21:00)<br>
-          ④ 松本清：09:00 ~ 01:00<br>
-          ⑤ 唐吉訶德：09:00 ~ 05:00
-        </p>
+        <p class="note">★ 附近有 JINS, 松本清, 唐吉訶德等</p>
+        <div class="cost-badge" id="badge-day1-晚餐/購物">💵 + 記帳</div>
       </div>
     </div>
 
   </div>
 
-  <!-- 其他天數預留 -->
-  <div id="day2" class="tab-content"><div class="card-title">Day 2</div></div>
-  <div id="day3" class="tab-content"><div class="card-title">Day 3</div></div>
+  <!-- 其他天數預留 D2 ~ D8 -->
+  <div id="day2" class="tab-content"><div class="card-title">Day 2 行程 (預留)</div></div>
+  <div id="day3" class="tab-content"><div class="card-title">Day 3 行程 (預留)</div></div>
+  <div id="day4" class="tab-content"><div class="card-title">Day 4 行程 (預留)</div></div>
+  <div id="day5" class="tab-content"><div class="card-title">Day 5 行程 (預留)</div></div>
+  <div id="day6" class="tab-content"><div class="card-title">Day 6 行程 (預留)</div></div>
+  <div id="day7" class="tab-content"><div class="card-title">Day 7 行程 (預留)</div></div>
+  <div id="day8" class="tab-content"><div class="card-title">Day 8 行程 (預留)</div></div>
 
   <!-- 地圖 Modal 彈窗 -->
   <div class="modal-overlay" id="mapModal">
@@ -649,46 +740,37 @@
       <div id="map"></div>
       <div class="route-info-panel">
         <div class="route-title">📌 Day 1 路線景點順序</div>
-        
         <div class="drive-item"><span class="spot-dot">1</span> <b>budget 租車 (熊本機場)</b></div>
         <div class="route-distance-info">🚗 距離約 6.5 KM ｜ 車程約 10 分鐘</div>
-        
         <div class="drive-item"><span class="spot-dot">2</span> <b>🏴‍☠️ Sanji Statue</b></div>
         <div class="route-distance-info">🚗 距離約 9.2 KM ｜ 車程約 15 分鐘</div>
-        
         <div class="drive-item"><span class="spot-dot">3</span> <b>🏴‍☠️ Brook Statue</b></div>
         <div class="route-distance-info">🚗 距離約 8.5 KM ｜ 車程約 20 分鐘</div>
-        
         <div class="drive-item"><span class="spot-dot">4</span> <b>🏴‍☠️ Chopper Statue</b></div>
         <div class="route-distance-info">🚗 距離約 3.2 KM ｜ 車程約 10 分鐘</div>
-        
-        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ Rufi Statue (熊本縣廳/Teresa飯店)</b></div>
+        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ Rufi Statue (熊本縣廳)</b></div>
         <div class="route-distance-info">🚗 距離約 21.0 KM ｜ 車程約 40 分鐘</div>
-        
         <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ Jinbe Statue (長部田海床路)</b></div>
         <div class="route-distance-info">🚗 距離約 17.5 KM ｜ 車程約 30 分鐘</div>
-        
         <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA 熊本</b></div>
         <div class="route-distance-info">🚗 距離約 2.8 KM ｜ 車程約 10 分鐘</div>
-        
-        <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA KUMAMOTO</b></div>
+        <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA</b></div>
       </div>
     </div>
   </div>
 
-  <!-- 🧮 匯率計算機 Modal 彈窗 -->
+  <!-- 🧮 匯率計算機 Modal -->
   <div class="modal-overlay" id="calcModal">
-    <div class="modal-container" style="height: auto; max-height: 90vh;">
+    <div class="modal-container">
       <div class="modal-header calc-header">
         <span>🧮 匯率與費用計算機</span>
         <button class="modal-close" onclick="closeCalc()">✕</button>
       </div>
       <div class="calc-body">
-        
         <div class="rate-setting">
           <span>日圓對台幣匯率 (1 JPY =)</span>
           <div>
-            <input type="number" id="exchangeRate" value="0.200" step="0.001" oninput="calculateExchange()"> NT$
+            <input type="number" id="exchangeRate" value="0.200" step="0.001" oninput="saveRate(); calculateExchange(); renderAllBadges();"> NT$
           </div>
         </div>
 
@@ -727,22 +809,103 @@
           <button class="key-btn" onclick="pressCalc('0')" style="grid-column: span 2;">0</button>
           <button class="key-btn" onclick="pressCalc('.')">.</button>
         </div>
-
       </div>
     </div>
   </div>
 
-  <!-- 底部選單 -->
+  <!-- 💰 8天總費用統計 Modal -->
+  <div class="modal-overlay" id="costModal">
+    <div class="modal-container">
+      <div class="modal-header cost-header">
+        <span>💰 8天全行程總費用統計</span>
+        <button class="modal-close" onclick="closeCostSummary()">✕</button>
+      </div>
+      <div class="cost-summary-body">
+        <div class="total-cost-card">
+          <div class="total-cost-title">全行程累積花費總計</div>
+          <div class="total-cost-jpy" id="grandTotalJPY">¥ 0</div>
+          <div class="total-cost-twd" id="grandTotalTWD">≈ NT$ 0</div>
+        </div>
+
+        <div style="font-weight:bold; font-size:0.9rem; color:#4a5568;">📅 每日消費分拆 (Day 1 ~ Day 8)</div>
+        <div class="day-cost-list" id="dayCostList">
+          <!-- 動態生成 Day 1 ~ Day 8 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✏️ 卡片記帳 Modal -->
+  <div class="modal-overlay" id="expenseModal">
+    <div class="modal-container" style="height: auto;">
+      <div class="modal-header expense-header">
+        <span id="expModalTitle">✏️ 新增消費記帳</span>
+        <button class="modal-close" onclick="closeExpenseModal()">✕</button>
+      </div>
+      <div class="expense-body">
+        <div class="form-group">
+          <label>消費類別</label>
+          <select id="expCategory">
+            <option value="🍽️ 餐飲">🍽️ 餐飲</option>
+            <option value="🎟️ 門票">🎟️ 門票</option>
+            <option value="🛍️ 購物">🛍️ 購物</option>
+            <option value="🚗 交通">🚗 交通</option>
+            <option value="🏨 住宿">🏨 住宿</option>
+            <option value="💡 其他">💡 其他</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>金額 (日圓 JPY)</label>
+          <input type="number" id="expAmount" placeholder="請輸入日圓金額" inputmode="numeric">
+        </div>
+
+        <div class="form-group">
+          <label>備註 (可不填)</label>
+          <input type="text" id="expNote" placeholder="例如：藥妝、紀念品">
+        </div>
+
+        <button class="btn-submit" onclick="saveExpense()">新增此筆消費</button>
+
+        <div class="expense-list" id="expHistoryList">
+          <!-- 該景點已上記紀錄 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部 8 天選單 -->
   <div class="bottom-nav">
     <button class="nav-btn" onclick="switchTab('info', this)">ℹ️<span class="sub-text">資訊</span></button>
     <button class="nav-btn active" onclick="switchTab('day1', this)">9/5<span class="sub-text">D1</span></button>
     <button class="nav-btn" onclick="switchTab('day2', this)">9/6<span class="sub-text">D2</span></button>
     <button class="nav-btn" onclick="switchTab('day3', this)">9/7<span class="sub-text">D3</span></button>
+    <button class="nav-btn" onclick="switchTab('day4', this)">9/8<span class="sub-text">D4</span></button>
+    <button class="nav-btn" onclick="switchTab('day5', this)">9/9<span class="sub-text">D5</span></button>
+    <button class="nav-btn" onclick="switchTab('day6', this)">9/10<span class="sub-text">D6</span></button>
+    <button class="nav-btn" onclick="switchTab('day7', this)">9/11<span class="sub-text">D7</span></button>
+    <button class="nav-btn" onclick="switchTab('day8', this)">9/12<span class="sub-text">D8</span></button>
   </div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
+    /* ========== 資料儲存與 localStorage 控制 ========== */
+    let expenses = JSON.parse(localStorage.getItem('kyushu_expenses') || '[]');
+    let currentRate = parseFloat(localStorage.getItem('kyushu_rate') || '0.200');
+
+    document.getElementById('exchangeRate').value = currentRate;
+
+    function saveRate() {
+      currentRate = parseFloat(document.getElementById('exchangeRate').value) || 0.2;
+      localStorage.setItem('kyushu_rate', currentRate);
+    }
+
+    function saveExpensesToStorage() {
+      localStorage.setItem('kyushu_expenses', JSON.stringify(expenses));
+      renderAllBadges();
+    }
+
     function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -780,40 +943,24 @@
         setTimeout(() => map.invalidateSize(), 200);
       }
     }
-
-    function closeDayMap() {
-      document.getElementById('mapModal').classList.remove('active');
-    }
+    function closeDayMap() { document.getElementById('mapModal').classList.remove('active'); }
 
     /* ========== 匯率計算機邏輯 ========== */
     let calcExpr = "0";
-
-    function openCalc() {
-      document.getElementById('calcModal').classList.add('active');
-    }
-    function closeCalc() {
-      document.getElementById('calcModal').classList.remove('active');
-    }
+    function openCalc() { document.getElementById('calcModal').classList.add('active'); }
+    function closeCalc() { document.getElementById('calcModal').classList.remove('active'); }
 
     function pressCalc(val) {
-      if (val === 'C') {
-        calcExpr = "0";
-      } else if (val === '⌫') {
-        calcExpr = calcExpr.length > 1 ? calcExpr.slice(0, -1) : "0";
-      } else if (val === '=') {
+      if (val === 'C') calcExpr = "0";
+      else if (val === '⌫') calcExpr = calcExpr.length > 1 ? calcExpr.slice(0, -1) : "0";
+      else if (val === '=') {
         try {
-          // 安全評估表達式
           let sanitized = calcExpr.replace(/[^0-9+\-*/.]/g, '');
           calcExpr = String(eval(sanitized) || 0);
-        } catch {
-          calcExpr = "Error";
-        }
+        } catch { calcExpr = "Error"; }
       } else {
-        if (calcExpr === "0" || calcExpr === "Error") {
-          calcExpr = val;
-        } else {
-          calcExpr += val;
-        }
+        if (calcExpr === "0" || calcExpr === "Error") calcExpr = val;
+        else calcExpr += val;
       }
       updateCalcDisplay();
     }
@@ -824,19 +971,166 @@
     }
 
     function calculateExchange() {
-      const rate = parseFloat(document.getElementById('exchangeRate').value) || 0.2;
       let jpyVal = 0;
       try {
         let sanitized = calcExpr.replace(/[^0-9+\-*/.]/g, '');
         jpyVal = eval(sanitized) || 0;
-      } catch {
-        jpyVal = 0;
-      }
-      const twdVal = Math.round(jpyVal * rate);
+      } catch { jpyVal = 0; }
+      const twdVal = Math.round(jpyVal * currentRate);
       document.getElementById('twdDisplay').innerText = `NT$ ${twdVal.toLocaleString()}`;
     }
 
-    // ========== 串接 Open-Meteo 免費氣象 API (熊本市) ==========
+    /* ========== 8天費用統計 Modal ========== */
+    function openCostSummary() {
+      document.getElementById('costModal').classList.add('active');
+      renderCostSummary();
+    }
+    function closeCostSummary() { document.getElementById('costModal').classList.remove('active'); }
+
+    function renderCostSummary() {
+      let grandTotal = 0;
+      const dayTotals = { info: 0, day1: 0, day2: 0, day3: 0, day4: 0, day5: 0, day6: 0, day7: 0, day8: 0 };
+
+      expenses.forEach(item => {
+        if (dayTotals[item.dayId] !== undefined) {
+          dayTotals[item.dayId] += item.amount;
+        }
+        grandTotal += item.amount;
+      });
+
+      document.getElementById('grandTotalJPY').innerText = `¥ ${grandTotal.toLocaleString()}`;
+      document.getElementById('grandTotalTWD').innerText = `≈ NT$ ${Math.round(grandTotal * currentRate).toLocaleString()}`;
+
+      const listContainer = document.getElementById('dayCostList');
+      listContainer.innerHTML = '';
+
+      const dayNames = {
+        info: 'ℹ️ 旅遊備忘 / 雜項',
+        day1: 'Day 1 (9/5 六)',
+        day2: 'Day 2 (9/6 日)',
+        day3: 'Day 3 (9/7 一)',
+        day4: 'Day 4 (9/8 二)',
+        day5: 'Day 5 (9/9 三)',
+        day6: 'Day 6 (9/10 四)',
+        day7: 'Day 7 (9/11 五)',
+        day8: 'Day 8 (9/12 六)'
+      };
+
+      Object.keys(dayTotals).forEach(dayKey => {
+        const jpy = dayTotals[dayKey];
+        const twd = Math.round(jpy * currentRate);
+        const itemHtml = `
+          <div class="day-cost-item">
+            <span class="day-label">${dayNames[dayKey]}</span>
+            <div>
+              <div class="day-val">¥ ${jpy.toLocaleString()}</div>
+              <div class="day-twd">≈ NT$ ${twd.toLocaleString()}</div>
+            </div>
+          </div>
+        `;
+        listContainer.innerHTML += itemHtml;
+      });
+    }
+
+    /* ========== 卡片點擊記帳 Modal 控制 ========== */
+    let currentEditingDay = '';
+    let currentEditingSpot = '';
+
+    function openExpenseModal(dayId, spotName) {
+      currentEditingDay = dayId;
+      currentEditingSpot = spotName;
+
+      document.getElementById('expModalTitle').innerText = `✏️ 記帳：${spotName}`;
+      document.getElementById('expAmount').value = '';
+      document.getElementById('expNote').value = '';
+      document.getElementById('expenseModal').classList.add('active');
+
+      renderSpotExpenseHistory();
+    }
+
+    function closeExpenseModal() {
+      document.getElementById('expenseModal').classList.remove('active');
+    }
+
+    function saveExpense() {
+      const category = document.getElementById('expCategory').value;
+      const amount = parseFloat(document.getElementById('expAmount').value);
+      const note = document.getElementById('expNote').value.trim();
+
+      if (isNaN(amount) || amount <= 0) {
+        alert('請輸入有效的數字金額！');
+        return;
+      }
+
+      const newExpense = {
+        id: Date.now(),
+        dayId: currentEditingDay,
+        spotName: currentEditingSpot,
+        category: category,
+        amount: amount,
+        note: note
+      };
+
+      expenses.push(newExpense);
+      saveExpensesToStorage();
+
+      document.getElementById('expAmount').value = '';
+      document.getElementById('expNote').value = '';
+      renderSpotExpenseHistory();
+    }
+
+    function deleteExpense(id) {
+      expenses = expenses.filter(e => e.id !== id);
+      saveExpensesToStorage();
+      renderSpotExpenseHistory();
+    }
+
+    function renderSpotExpenseHistory() {
+      const historyContainer = document.getElementById('expHistoryList');
+      const spotExpenses = expenses.filter(e => e.dayId === currentEditingDay && e.spotName === currentEditingSpot);
+
+      if (spotExpenses.length === 0) {
+        historyContainer.innerHTML = '<div style="color:#a0aec0; font-size:0.8rem; text-align:center; padding:8px;">尚無消費紀錄</div>';
+        return;
+      }
+
+      historyContainer.innerHTML = '<div style="font-size:0.8rem; font-weight:bold; color:#718096; margin-bottom:4px;">已記錄項目：</div>';
+      spotExpenses.forEach(exp => {
+        historyContainer.innerHTML += `
+          <div class="expense-item">
+            <div>
+              <b>${exp.category}</b> ¥${exp.amount.toLocaleString()} ${exp.note ? `(${exp.note})` : ''}
+            </div>
+            <span class="expense-item-del" onclick="deleteExpense(${exp.id})">✕</span>
+          </div>
+        `;
+      });
+    }
+
+    function renderAllBadges() {
+      // 掃描卡片更新右上角標籤顯示
+      document.querySelectorAll('.cost-badge').forEach(badge => {
+        const idParts = badge.id.replace('badge-', '').split('-');
+        const dayId = idParts[0];
+        const spotName = idParts.slice(1).join('-');
+
+        const spotExpenses = expenses.filter(e => e.dayId === dayId && e.spotName === spotName);
+        const total = spotExpenses.reduce((sum, e) => sum + e.amount, 0);
+
+        if (total > 0) {
+          const twd = Math.round(total * currentRate);
+          badge.innerHTML = `💰 ¥${total.toLocaleString()} (NT$ ${twd.toLocaleString()})`;
+          badge.style.background = '#feebc8';
+          badge.style.color = '#c05621';
+        } else {
+          badge.innerHTML = `💵 + 記帳`;
+          badge.style.background = '#fefcbf';
+          badge.style.color = '#744210';
+        }
+      });
+    }
+
+    /* ========== 串接 Open-Meteo 免費氣象 API ========== */
     async function fetchKumamotoWeather() {
       const lat = 32.7898;
       const lng = 130.6886;
@@ -854,35 +1148,26 @@
         let weatherText = "晴朗";
         let weatherIcon = "☀️";
 
-        if (weatherCode === 1 || weatherCode === 2 || weatherCode === 3) {
-          weatherText = "多雲 / 晴時多雲";
-          weatherIcon = "⛅";
-        } else if (weatherCode >= 45 && weatherCode <= 48) {
-          weatherText = "有霧";
-          weatherIcon = "🌫️";
-        } else if (weatherCode >= 51 && weatherCode <= 67) {
-          weatherText = "有雨";
-          weatherIcon = "🌧️";
-        } else if (weatherCode >= 80 && weatherCode <= 82) {
-          weatherText = "陣雨";
-          weatherIcon = "🌦️";
-        } else if (weatherCode >= 95) {
-          weatherText = "雷雨";
-          weatherIcon = "🌩️";
-        }
+        if (weatherCode >= 1 && weatherCode <= 3) { weatherText = "多雲"; weatherIcon = "⛅"; }
+        else if (weatherCode >= 45 && weatherCode <= 48) { weatherText = "有霧"; weatherIcon = "🌫️"; }
+        else if (weatherCode >= 51 && weatherCode <= 67) { weatherText = "有雨"; weatherIcon = "🌧️"; }
+        else if (weatherCode >= 80 && weatherCode <= 82) { weatherText = "陣雨"; weatherIcon = "🌦️"; }
+        else if (weatherCode >= 95) { weatherText = "雷雨"; weatherIcon = "🌩️"; }
 
         document.getElementById('api-temp').innerText = `${weatherIcon} ${currentTemp}°C (${minTemp}°C - ${maxTemp}°C)`;
-        document.getElementById('api-detail').innerText = `${weatherText} ｜ 即時自動連線更新`;
+        document.getElementById('api-detail').innerText = `${weatherText} ｜ 即時連線更新`;
         document.getElementById('api-icon').innerText = weatherIcon;
 
       } catch (error) {
-        console.error("無法取得氣象資料:", error);
         document.getElementById('api-temp').innerText = "⛅ 21°C - 30°C";
         document.getElementById('api-detail').innerText = "天氣資訊取得失敗，顯示預設值";
       }
     }
 
-    window.addEventListener('DOMContentLoaded', fetchKumamotoWeather);
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchKumamotoWeather();
+      renderAllBadges();
+    });
   </script>
 
 </body>
