@@ -553,6 +553,11 @@
     </div>
   </div>
 
+  <!-- 0. 資訊頁面 -->
+  <div id="info" class="tab-content">
+    <div class="card-title">ℹ️ 重要旅遊資訊</div>
+  </div>
+
   <!-- 1. Day 1 行程 -->
   <div id="day1" class="tab-content active">
     
@@ -906,6 +911,7 @@
 
   <!-- 底部選單 -->
   <div class="bottom-nav">
+    <button class="nav-btn" onclick="switchTab('info', this)">ℹ️<span class="sub-text">資訊</span></button>
     <button class="nav-btn active" onclick="switchTab('day1', this)">9/5<span class="sub-text">D1</span></button>
     <button class="nav-btn" onclick="switchTab('day2', this)">9/6<span class="sub-text">D2</span></button>
     <button class="nav-btn" onclick="switchTab('day3', this)">9/7<span class="sub-text">D3</span></button>
