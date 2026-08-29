@@ -268,6 +268,24 @@
       font-size: 0.8rem;
     }
 
+    .export-btn {
+      background: #3182ce;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 0.88rem;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 3px 8px rgba(49, 130, 206, 0.3);
+      transition: all 0.2s ease;
+    }
+    .export-btn:active { transform: scale(0.98); }
+
     .chart-box {
       background: white;
       border-radius: 16px;
@@ -844,7 +862,7 @@
     </div>
   </div>
 
-  <!-- 💰 8天總費用統計 Modal (含類別圓餅圖) -->
+  <!-- 💰 8天總費用統計 Modal (含類別圓餅圖與 CSV 匯出) -->
   <div class="modal-overlay" id="costModal">
     <div class="modal-container">
       <div class="modal-header cost-header">
@@ -868,6 +886,8 @@
             </div>
           </div>
         </div>
+
+        <button class="export-btn" onclick="exportExpensesToCSV()">📥 匯出 CSV 記帳資料</button>
 
         <!-- 📊 消費類別圓餅圖卡片 -->
         <div class="chart-box">
@@ -1159,7 +1179,6 @@
         categoryChart.destroy();
       }
 
-      // 若尚無任何消費紀錄，繪製預設灰階佔位圓餅圖
       if (totalAmount === 0) {
         categoryChart = new Chart(ctx, {
           type: 'pie',
@@ -1193,12 +1212,12 @@
           datasets: [{
             data: dataValues,
             backgroundColor: [
-              '#ff7e5f', // 餐飲 (珊瑚橙)
-              '#feb47b', // 購物 (暖橘)
-              '#4299e1', // 交通 (藍)
-              '#48bb78', // 住宿 (綠)
-              '#9f7aea', // 門票 (紫)
-              '#a0aec0'  // 其他 (灰)
+              '#ff7e5f', // 餐飲
+              '#feb47b', // 購物
+              '#4299e1', // 交通
+              '#48bb78', // 住宿
+              '#9f7aea', // 門票
+              '#a0aec0'  // 其他
             ],
             borderWidth: 2,
             borderColor: '#ffffff'
@@ -1227,6 +1246,58 @@
           }
         }
       });
+    }
+
+    /* ========== 📥 匯出 CSV 功能 ========== */
+    function exportExpensesToCSV() {
+      if (!expenses || expenses.length === 0) {
+        alert('目前尚無任何記帳資料可供匯出！');
+        return;
+      }
+
+      const dayNames = {
+        day1: 'Day 1 (9/5)',
+        day2: 'Day 2 (9/6)',
+        day3: 'Day 3 (9/7)',
+        day4: 'Day 4 (9/8)',
+        day5: 'Day 5 (9/9)',
+        day6: 'Day 6 (9/10)',
+        day7: 'Day 7 (9/11)',
+        day8: 'Day 8 (9/12)'
+      };
+
+      // CSV 表頭
+      let csvContent = '日期/天數,地點名稱,付款人,消費類別,原始幣種,原始金額,折合台幣(TWD),折合日圓(JPY),備註\n';
+
+      // 逐筆轉換資料列（欄位用雙引號包裹以防欄位內容包含逗號）
+      expenses.forEach(item => {
+        const dayText = dayNames[item.dayId] || item.dayId;
+        const spot = `"${(item.spotName || '').replace(/"/g, '""')}"`;
+        const payer = `"${(item.payer || '').replace(/"/g, '""')}"`;
+        const category = `"${(item.category || '').replace(/"/g, '""')}"`;
+        const currency = item.currency || 'TWD';
+        const amount = item.amount || 0;
+        const amountTWD = item.amountTWD || 0;
+        const amountJPY = item.amountJPY || 0;
+        const note = `"${(item.note || '').replace(/"/g, '""')}"`;
+
+        csvContent += `${dayText},${spot},${payer},${category},${currency},${amount},${amountTWD},${amountJPY},${note}\n`;
+      });
+
+      // 加入 UTF-8 BOM (\uFEFF) 避免 Excel 開啟中文或 Emoji 亂碼
+      const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', `九州旅行團記帳本_${dateStr}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
 
     /* ========== 點擊卡片記帳 Modal ========== */
