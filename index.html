@@ -108,52 +108,8 @@
 
     #map {
       width: 100%;
-      height: 55%;
+      height: 100%;
       z-index: 1;
-    }
-
-    .route-info-panel {
-      height: 45%;
-      background: #f8fafc;
-      padding: 12px 15px;
-      overflow-y: auto;
-      border-top: 2px solid #e2e8f0;
-    }
-    .route-title {
-      font-size: 0.95rem;
-      font-weight: bold;
-      color: #2b6cb0;
-      margin-bottom: 8px;
-    }
-    .drive-item {
-      display: flex;
-      align-items: center;
-      margin: 6px 0;
-      font-size: 0.85rem;
-    }
-    .drive-time-tag {
-      background: #feebc8;
-      color: #c05621;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-weight: bold;
-      font-size: 0.78rem;
-      margin: 4px 0 4px 24px;
-      display: inline-block;
-      border: 1px solid #fbd38d;
-    }
-    .spot-dot {
-      width: 20px; height: 20px;
-      border-radius: 50%;
-      background: #3182ce;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: bold;
-      margin-right: 8px;
-      flex-shrink: 0;
     }
 
     /* ========== 頂部毛玻璃天氣卡 ========== */
@@ -278,24 +234,6 @@
       line-height: 1.4;
     }
 
-    /* 車程專用大方塊 (虛線橘色調) */
-    .main-card.drive-card {
-      background-color: #fffaf0;
-      border: 1px dashed #fbd38d;
-      box-shadow: none;
-    }
-    .main-card.drive-card .time-badge {
-      background-color: #feebc8;
-      border: 1px dashed #fbd38d;
-    }
-    .main-card.drive-card .time-start, 
-    .main-card.drive-card .time-end { color: #dd6b20; }
-    .main-card.drive-card .time-divider { color: #fbd38d; }
-    .main-card.drive-card .spot-name {
-      font-size: 0.88rem;
-      color: #dd6b20;
-    }
-
     /* ========== 底部彩色滾動選單 ========== */
     .bottom-nav {
       position: fixed;
@@ -348,7 +286,7 @@
 
   <div class="header-container">
     <h1>🏴‍☠️ 胖胖旅行團之九州篇</h1>
-    <button class="map-btn" onclick="openDayMap()">🗺️ 查看今日全景路線圖 & 車程</button>
+    <button class="map-btn" onclick="openDayMap()">🗺️ 查看今日全景路線圖</button>
   </div>
 
   <!-- 1. 資訊頁面 -->
@@ -414,19 +352,7 @@
       </div>
     </div>
 
-    <!-- 車程 1 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">12:30</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">12:50</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 20 分鐘 (16 km)</span>
-      </div>
-    </div>
-
-    <!-- 3. 香吉士像 -->
+    <!-- 3. Sanji Statue -->
     <div class="main-card">
       <div class="time-badge">
         <span class="time-start">12:50</span>
@@ -435,26 +361,14 @@
       </div>
       <div class="info-content">
         <div class="spot-header">
-          <span class="spot-name">🏴‍☠️ 香吉士雕像</span>
+          <span class="spot-name">🏴‍☠️ Sanji Statue</span>
           <a href="https://maps.google.com/?q=Sanji+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
         </div>
         <p class="note">益城町交流情報中心 Minaterasu (每週一休息)</p>
       </div>
     </div>
 
-    <!-- 車程 2 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">13:30</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">13:45</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 15 分鐘 (8 km)</span>
-      </div>
-    </div>
-
-    <!-- 4. 布魯克像 -->
+    <!-- 4. Brook Statue -->
     <div class="main-card">
       <div class="time-badge">
         <span class="time-start">13:45</span>
@@ -463,26 +377,14 @@
       </div>
       <div class="info-content">
         <div class="spot-header">
-          <span class="spot-name">🏴‍☠️ 布魯克雕像</span>
+          <span class="spot-name">🏴‍☠️ Brook Statue</span>
           <a href="https://maps.google.com/?q=Brook+Statue+Mifune" target="_blank" class="map-link">📍 地圖</a>
         </div>
         <p class="note">御船町恐龍博物館前 (每週一、四休息)</p>
       </div>
     </div>
 
-    <!-- 車程 3 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">14:15</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">14:35</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 20 分鐘 (10 km)</span>
-      </div>
-    </div>
-
-    <!-- 5. 喬巴像 -->
+    <!-- 5. Chopper Statue -->
     <div class="main-card">
       <div class="time-badge">
         <span class="time-start">14:35</span>
@@ -491,26 +393,14 @@
       </div>
       <div class="info-content">
         <div class="spot-header">
-          <span class="spot-name">🏴‍☠️ 喬巴雕像</span>
+          <span class="spot-name">🏴‍☠️ Chopper Statue</span>
           <a href="https://maps.google.com/?q=Chopper+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
         </div>
         <p class="note">熊本市動植物園 (每週一、二休息)</p>
       </div>
     </div>
 
-    <!-- 車程 4 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">15:05</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">15:15</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 10 分鐘 (4 km)</span>
-      </div>
-    </div>
-
-    <!-- 6. 魯夫像 -->
+    <!-- 6. Luffy Statue -->
     <div class="main-card">
       <div class="time-badge">
         <span class="time-start">15:15</span>
@@ -519,26 +409,14 @@
       </div>
       <div class="info-content">
         <div class="spot-header">
-          <span class="spot-name">🏴‍☠️ 魯夫雕像</span>
+          <span class="spot-name">🏴‍☠️ Luffy Statue</span>
           <a href="https://maps.google.com/?q=Luffy+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
         </div>
         <p class="note">熊本縣廳前廣場</p>
       </div>
     </div>
 
-    <!-- 車程 5 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">15:45</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">16:25</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 40 分鐘 (21 km)</span>
-      </div>
-    </div>
-
-    <!-- 7. 吉貝爾像 -->
+    <!-- 7. Jinbe Statue -->
     <div class="main-card">
       <div class="time-badge">
         <span class="time-start">16:25</span>
@@ -547,22 +425,10 @@
       </div>
       <div class="info-content">
         <div class="spot-header">
-          <span class="spot-name">🏴‍☠️ 吉貝爾雕像</span>
+          <span class="spot-name">🏴‍☠️ Jinbe Statue</span>
           <a href="https://maps.google.com/?q=Jinbe+Statue+Uto" target="_blank" class="map-link">📍 地圖</a>
         </div>
         <p class="note">宇土市 長部田海床路</p>
-      </div>
-    </div>
-
-    <!-- 車程 6 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">17:05</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">17:35</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 30 分鐘 (16 km)</span>
       </div>
     </div>
 
@@ -579,18 +445,6 @@
           <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
         </div>
         <p class="note">海賊王專賣店 6F (營業至 20:00)</p>
-      </div>
-    </div>
-
-    <!-- 車程 7 -->
-    <div class="main-card drive-card">
-      <div class="time-badge">
-        <span class="time-start">19:35</span>
-        <span class="time-divider">┆</span>
-        <span class="time-end">19:50</span>
-      </div>
-      <div class="info-content">
-        <span class="spot-name">🚗 車程：約 15 分鐘 (3 km)</span>
       </div>
     </div>
 
@@ -618,28 +472,10 @@
   <div class="modal-overlay" id="mapModal">
     <div class="modal-container">
       <div class="modal-header">
-        <span>🗺️ Day 1 全景路線圖與車程</span>
+        <span>🗺️ Day 1 全景路線圖</span>
         <button class="modal-close" onclick="closeDayMap()">✕</button>
       </div>
       <div id="map"></div>
-      <div class="route-info-panel">
-        <div class="route-title">🚗 Day 1 導航與景點間車程預估</div>
-        <div class="drive-item"><span class="spot-dot">1</span> <b>Budget 租車 熊本機場店</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 20 分鐘 (16 km)</div>
-        <div class="drive-item"><span class="spot-dot">2</span> <b>🏴‍☠️ 香吉士雕像 (益城町交流情報中心 Minaterasu)</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 15 分鐘 (8 km)</div>
-        <div class="drive-item"><span class="spot-dot">3</span> <b>🏴‍☠️ 布魯克雕像 (御船町恐龍博物館)</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 20 分鐘 (10 km)</div>
-        <div class="drive-item"><span class="spot-dot">4</span> <b>🏴‍☠️ 喬巴雕像 (熊本市動植物園)</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 10 分鐘 (4 km)</div>
-        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ 魯夫雕像 (熊本縣廳)</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 40 分鐘 (21 km)</div>
-        <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ 吉貝爾雕像 (長部田海床路)</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 30 分鐘 (16 km)</div>
-        <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA 熊本</b></div>
-        <div class="drive-time-tag">⏱️ 車程：約 15 分鐘 (3 km)</div>
-        <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA</b></div>
-      </div>
     </div>
   </div>
 
@@ -665,11 +501,11 @@
     let map = null;
     const day1Spots = [
       { name: "1. Budget 租車 熊本機場店", lat: 32.8364, lng: 130.8525 },
-      { name: "2. 🏴‍☠️ 香吉士雕像", lat: 32.7931, lng: 130.8169 },
-      { name: "3. 🏴‍☠️ 布魯克雕像", lat: 32.7169, lng: 130.8038 },
-      { name: "4. 🏴‍☠️ 喬巴雕像", lat: 32.7788, lng: 130.7511 },
-      { name: "5. 🏴‍☠️ 魯夫雕像", lat: 32.7894, lng: 130.7416 },
-      { name: "6. 🏴‍☠️ 吉貝爾雕像", lat: 32.6953, lng: 130.6033 },
+      { name: "2. 🏴‍☠️ Sanji Statue", lat: 32.7931, lng: 130.8169 },
+      { name: "3. 🏴‍☠️ Brook Statue", lat: 32.7169, lng: 130.8038 },
+      { name: "4. 🏴‍☠️ Chopper Statue", lat: 32.7788, lng: 130.7511 },
+      { name: "5. 🏴‍☠️ Luffy Statue", lat: 32.7894, lng: 130.7416 },
+      { name: "6. 🏴‍☠️ Jinbe Statue", lat: 32.6953, lng: 130.6033 },
       { name: "7. 🛍️ AMU PLAZA 熊本", lat: 32.7898, lng: 130.6886 },
       { name: "8. 🏨 SOTETSU GRAND FRESA", lat: 32.8016, lng: 130.7078 }
     ];
