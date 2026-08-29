@@ -250,8 +250,8 @@
       text-align: center;
     }
     .total-cost-title { font-size: 0.9rem; opacity: 0.9; margin-bottom: 4px; }
-    .total-cost-jpy { font-size: 1.8rem; font-weight: 900; }
-    .total-cost-twd { font-size: 1.1rem; opacity: 0.95; font-weight: bold; margin-top: 2px; }
+    .total-cost-twd { font-size: 1.8rem; font-weight: 900; }
+    .total-cost-jpy { font-size: 1.1rem; opacity: 0.95; font-weight: bold; margin-top: 2px; }
 
     .person-split {
       display: flex;
@@ -283,7 +283,7 @@
     }
     .day-cost-item .day-label { font-weight: bold; color: #2d3748; }
     .day-cost-item .day-val { font-weight: bold; color: #d69e2e; text-align: right; }
-    .day-cost-item .day-twd { font-size: 0.75rem; color: #718096; font-weight: normal; }
+    .day-cost-item .day-jpy { font-size: 0.75rem; color: #718096; font-weight: normal; }
 
     /* ========== 記帳彈窗 Modal 樣式 ========== */
     .expense-body {
@@ -837,17 +837,17 @@
       <div class="cost-summary-body">
         <div class="total-cost-card">
           <div class="total-cost-title">全行程累積花費總計</div>
-          <div class="total-cost-jpy" id="grandTotalJPY">¥ 0</div>
-          <div class="total-cost-twd" id="grandTotalTWD">≈ NT$ 0</div>
+          <div class="total-cost-twd" id="grandTotalTWD">NT$ 0</div>
+          <div class="total-cost-jpy" id="grandTotalJPY">≈ ¥ 0</div>
 
           <div class="person-split">
             <div class="person-box">
               <div>🐻 胖胖付</div>
-              <div id="pangTotal">¥0</div>
+              <div id="pangTotal">NT$ 0</div>
             </div>
             <div class="person-box">
               <div>🐰 惠惠付</div>
-              <div id="huiTotal">¥0</div>
+              <div id="huiTotal">NT$ 0</div>
             </div>
           </div>
         </div>
@@ -894,13 +894,13 @@
           <div class="form-group" style="flex: 0 0 110px;">
             <label>幣種</label>
             <select id="expCurrency" onchange="updateAmountLabel()">
-              <option value="JPY">🇯🇵 日圓 (JPY)</option>
               <option value="TWD">🇹🇼 台幣 (TWD)</option>
+              <option value="JPY">🇯🇵 日圓 (JPY)</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label id="expAmountLabel">金額 (日圓 JPY)</label>
+            <label id="expAmountLabel">金額 (台幣 TWD)</label>
             <input type="number" id="expAmount" placeholder="請輸入金額" inputmode="numeric">
           </div>
         </div>
@@ -936,16 +936,24 @@
     let rawExpenses = JSON.parse(localStorage.getItem('kyushu_expenses') || '[]');
     let currentRate = parseFloat(localStorage.getItem('kyushu_rate') || '0.200');
 
-    // 舊資料相容機制：若舊資料沒有 currency 欄位，預設為 JPY
+    // 舊資料相容機制：計算出統一的台幣金額 (amountTWD) 與日幣金額 (amountJPY)
     let expenses = rawExpenses.map(item => {
       const cur = item.currency || 'JPY';
+      let twdAmt = item.amountTWD;
       let jpyAmt = item.amountJPY;
-      if (jpyAmt === undefined) {
-        jpyAmt = cur === 'TWD' ? (currentRate > 0 ? Math.round(item.amount / currentRate) : item.amount) : item.amount;
+
+      if (cur === 'TWD') {
+        twdAmt = item.amount;
+        jpyAmt = jpyAmt !== undefined ? jpyAmt : Math.round(twdAmt / (currentRate || 0.2));
+      } else {
+        jpyAmt = item.amount;
+        twdAmt = twdAmt !== undefined ? twdAmt : Math.round(jpyAmt * currentRate);
       }
+
       return {
         ...item,
         currency: cur,
+        amountTWD: twdAmt,
         amountJPY: jpyAmt
       };
     });
@@ -1036,7 +1044,7 @@
       document.getElementById('twdDisplay').innerText = `NT$ ${twdVal.toLocaleString()}`;
     }
 
-    /* ========== 8天費用統計 Modal ========== */
+    /* ========== 8天費用統計 Modal (台幣為主) ========== */
     function openCostSummary() {
       document.getElementById('costModal').classList.add('active');
       renderCostSummary();
@@ -1044,28 +1052,32 @@
     function closeCostSummary() { document.getElementById('costModal').classList.remove('active'); }
 
     function renderCostSummary() {
-      let grandTotalJPY = 0;
-      let pangTotalJPY = 0;
-      let huiTotalJPY = 0;
+      let grandTotalTWD = 0;
+      let pangTotalTWD = 0;
+      let huiTotalTWD = 0;
 
-      const dayTotals = { info: 0, day1: 0, day2: 0, day3: 0, day4: 0, day5: 0, day6: 0, day7: 0, day8: 0 };
+      const dayTotalsTWD = { info: 0, day1: 0, day2: 0, day3: 0, day4: 0, day5: 0, day6: 0, day7: 0, day8: 0 };
 
       expenses.forEach(item => {
-        const jpyAmount = item.amountJPY !== undefined ? item.amountJPY : (item.currency === 'TWD' ? Math.round(item.amount / currentRate) : item.amount);
+        const twdAmount = item.amountTWD !== undefined ? item.amountTWD : Math.round(item.amountJPY * currentRate);
         
-        if (dayTotals[item.dayId] !== undefined) {
-          dayTotals[item.dayId] += jpyAmount;
+        if (dayTotalsTWD[item.dayId] !== undefined) {
+          dayTotalsTWD[item.dayId] += twdAmount;
         }
-        grandTotalJPY += jpyAmount;
+        grandTotalTWD += twdAmount;
 
-        if (item.payer === '胖胖') pangTotalJPY += jpyAmount;
-        else if (item.payer === '惠惠') huiTotalJPY += jpyAmount;
+        if (item.payer === '胖胖') pangTotalTWD += twdAmount;
+        else if (item.payer === '惠惠') huiTotalTWD += twdAmount;
       });
 
-      document.getElementById('grandTotalJPY').innerText = `¥ ${grandTotalJPY.toLocaleString()}`;
-      document.getElementById('grandTotalTWD').innerText = `≈ NT$ ${Math.round(grandTotalJPY * currentRate).toLocaleString()}`;
-      document.getElementById('pangTotal').innerText = `¥${pangTotalJPY.toLocaleString()} (≈ NT$ ${Math.round(pangTotalJPY * currentRate).toLocaleString()})`;
-      document.getElementById('huiTotal').innerText = `¥${huiTotalJPY.toLocaleString()} (≈ NT$ ${Math.round(huiTotalJPY * currentRate).toLocaleString()})`;
+      const grandTotalJPY = currentRate > 0 ? Math.round(grandTotalTWD / currentRate) : 0;
+      const pangTotalJPY = currentRate > 0 ? Math.round(pangTotalTWD / currentRate) : 0;
+      const huiTotalJPY = currentRate > 0 ? Math.round(huiTotalTWD / currentRate) : 0;
+
+      document.getElementById('grandTotalTWD').innerText = `NT$ ${grandTotalTWD.toLocaleString()}`;
+      document.getElementById('grandTotalJPY').innerText = `≈ ¥ ${grandTotalJPY.toLocaleString()}`;
+      document.getElementById('pangTotal').innerText = `NT$ ${pangTotalTWD.toLocaleString()} (≈ ¥${pangTotalJPY.toLocaleString()})`;
+      document.getElementById('huiTotal').innerText = `NT$ ${huiTotalTWD.toLocaleString()} (≈ ¥${huiTotalJPY.toLocaleString()})`;
 
       const listContainer = document.getElementById('dayCostList');
       listContainer.innerHTML = '';
@@ -1082,15 +1094,15 @@
         day8: 'Day 8 (9/12 六)'
       };
 
-      Object.keys(dayTotals).forEach(dayKey => {
-        const jpy = dayTotals[dayKey];
-        const twd = Math.round(jpy * currentRate);
+      Object.keys(dayTotalsTWD).forEach(dayKey => {
+        const twd = dayTotalsTWD[dayKey];
+        const jpy = currentRate > 0 ? Math.round(twd / currentRate) : 0;
         const itemHtml = `
           <div class="day-cost-item">
             <span class="day-label">${dayNames[dayKey]}</span>
             <div>
-              <div class="day-val">¥ ${jpy.toLocaleString()}</div>
-              <div class="day-twd">≈ NT$ ${twd.toLocaleString()}</div>
+              <div class="day-val">NT$ ${twd.toLocaleString()}</div>
+              <div class="day-jpy">≈ ¥ ${jpy.toLocaleString()}</div>
             </div>
           </div>
         `;
@@ -1105,7 +1117,7 @@
     function updateAmountLabel() {
       const cur = document.getElementById('expCurrency').value;
       const label = document.getElementById('expAmountLabel');
-      label.innerText = cur === 'JPY' ? '金額 (日圓 JPY)' : '金額 (台幣 TWD)';
+      label.innerText = cur === 'TWD' ? '金額 (台幣 TWD)' : '金額 (日圓 JPY)';
     }
 
     function openExpenseModal(dayId, spotName) {
@@ -1113,7 +1125,7 @@
       currentEditingSpot = spotName;
 
       document.getElementById('expModalTitle').innerText = `✏️ 記帳：${spotName}`;
-      document.getElementById('expCurrency').value = 'JPY';
+      document.getElementById('expCurrency').value = 'TWD'; // 預設台幣
       updateAmountLabel();
       document.getElementById('expAmount').value = '';
       document.getElementById('expNote').value = '';
@@ -1138,8 +1150,16 @@
         return;
       }
 
-      // 計算統一的日幣換算金額
-      const amountJPY = currency === 'TWD' ? Math.round(amount / (currentRate || 0.2)) : amount;
+      let amountTWD = 0;
+      let amountJPY = 0;
+
+      if (currency === 'TWD') {
+        amountTWD = amount;
+        amountJPY = Math.round(amount / (currentRate || 0.2));
+      } else {
+        amountJPY = amount;
+        amountTWD = Math.round(amount * currentRate);
+      }
 
       const newExpense = {
         id: Date.now(),
@@ -1149,6 +1169,7 @@
         category: category,
         currency: currency,
         amount: amount,
+        amountTWD: amountTWD,
         amountJPY: amountJPY,
         note: note
       };
@@ -1181,9 +1202,15 @@
       historyContainer.innerHTML = '<div style="font-size:0.8rem; font-weight:bold; color:#718096; margin-bottom:6px;">此地點已記帳項目：</div>';
       spotExpenses.forEach(exp => {
         const payerTag = exp.payer ? `[${exp.payer}] ` : '';
-        const curSymbol = exp.currency === 'TWD' ? 'NT$' : '¥';
+        const curSymbol = exp.currency === 'JPY' ? '¥' : 'NT$';
         const displayAmt = `${curSymbol}${exp.amount.toLocaleString()}`;
-        const conversionNote = exp.currency === 'TWD' ? ` (≈¥${exp.amountJPY.toLocaleString()})` : '';
+        
+        let conversionNote = '';
+        if (exp.currency === 'JPY') {
+          conversionNote = ` (≈NT$${exp.amountTWD.toLocaleString()})`;
+        } else {
+          conversionNote = ` (≈¥${exp.amountJPY.toLocaleString()})`;
+        }
         
         historyContainer.innerHTML += `
           <div class="expense-item">
@@ -1196,26 +1223,26 @@
       });
     }
 
-  function renderAllBadges() {
-    document.querySelectorAll('.cost-badge').forEach(badge => {
-      const idParts = badge.id.replace('badge-', '').split('-');
-      const dayId = idParts[0];
-      const spotName = idParts.slice(1).join('-');
+    function renderAllBadges() {
+      document.querySelectorAll('.cost-badge').forEach(badge => {
+        const idParts = badge.id.replace('badge-', '').split('-');
+        const dayId = idParts[0];
+        const spotName = idParts.slice(1).join('-');
 
-      const spotExpenses = expenses.filter(e => e.dayId === dayId && e.spotName === spotName);
-      const totalJPY = spotExpenses.reduce((sum, e) => {
-        return sum + (e.amountJPY !== undefined ? e.amountJPY : (e.currency === 'TWD' ? Math.round(e.amount / currentRate) : e.amount));
-      }, 0);
+        const spotExpenses = expenses.filter(e => e.dayId === dayId && e.spotName === spotName);
+        const totalTWD = spotExpenses.reduce((sum, e) => {
+          return sum + (e.amountTWD !== undefined ? e.amountTWD : Math.round(e.amountJPY * currentRate));
+        }, 0);
 
-      if (totalJPY > 0) {
-        const twd = Math.round(totalJPY * currentRate);
-        badge.style.display = 'inline-flex';
-        badge.innerHTML = `💰 已記 ¥${totalJPY.toLocaleString()} (NT$ ${twd.toLocaleString()})`;
-      } else {
-        badge.style.display = 'none';
-      }
-    });
-  }
+        if (totalTWD > 0) {
+          const jpy = currentRate > 0 ? Math.round(totalTWD / currentRate) : 0;
+          badge.style.display = 'inline-flex';
+          badge.innerHTML = `💰 已記 NT$ ${totalTWD.toLocaleString()} (≈¥ ${jpy.toLocaleString()})`;
+        } else {
+          badge.style.display = 'none';
+        }
+      });
+    }
 
     /* ========== 氣象 API ========== */
     async function fetchKumamotoWeather() {
