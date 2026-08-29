@@ -553,19 +553,6 @@
     </div>
   </div>
 
-  <!-- 0. 資訊頁面 -->
-  <div id="info" class="tab-content">
-    <div class="card-title">ℹ️ 重要旅遊資訊</div>
-    <div class="main-card" onclick="openExpenseModal('info', '旅遊備忘錄')">
-      <div class="time-badge"><span class="time-single">備忘</span></div>
-      <div class="info-content">
-        <div class="spot-name">📝 旅遊備忘錄</div>
-        <p class="note">點擊卡片記帳預備支出與雜項。</p>
-        <div class="cost-badge" id="badge-info-旅遊備忘錄"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- 1. Day 1 行程 -->
   <div id="day1" class="tab-content active">
     
@@ -919,7 +906,6 @@
 
   <!-- 底部選單 -->
   <div class="bottom-nav">
-    <button class="nav-btn" onclick="switchTab('info', this)">ℹ️<span class="sub-text">資訊</span></button>
     <button class="nav-btn active" onclick="switchTab('day1', this)">9/5<span class="sub-text">D1</span></button>
     <button class="nav-btn" onclick="switchTab('day2', this)">9/6<span class="sub-text">D2</span></button>
     <button class="nav-btn" onclick="switchTab('day3', this)">9/7<span class="sub-text">D3</span></button>
@@ -1056,7 +1042,7 @@
       let pangTotalTWD = 0;
       let huiTotalTWD = 0;
 
-      const dayTotalsTWD = { info: 0, day1: 0, day2: 0, day3: 0, day4: 0, day5: 0, day6: 0, day7: 0, day8: 0 };
+      const dayTotalsTWD = { day1: 0, day2: 0, day3: 0, day4: 0, day5: 0, day6: 0, day7: 0, day8: 0 };
 
       expenses.forEach(item => {
         const twdAmount = item.amountTWD !== undefined ? item.amountTWD : Math.round(item.amountJPY * currentRate);
@@ -1083,7 +1069,6 @@
       listContainer.innerHTML = '';
 
       const dayNames = {
-        info: 'ℹ️ 旅遊備忘 / 雜項',
         day1: 'Day 1 (9/5 六)',
         day2: 'Day 2 (9/6 日)',
         day3: 'Day 3 (9/7 一)',
