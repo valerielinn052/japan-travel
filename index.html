@@ -10,10 +10,10 @@
       max-width: 600px;
       margin: 0 auto;
       padding: 20px 15px 90px 15px;
-      background-color: #fff5f7; /* 淡粉色背景 */
-      color: #4a4a4a;
+      background-color: #f0f7ff; /* 海洋淡藍色背景 */
+      color: #2c3e50;
     }
-    h1 { text-align: center; color: #ff6b8b; margin-bottom: 20px; }
+    h1 { text-align: center; color: #1565c0; margin-bottom: 20px; }
     
     /* 內容頁面控制 */
     .tab-content { display: none; }
@@ -24,13 +24,13 @@
       background: white;
       border-radius: 16px;
       padding: 20px;
-      box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
+      box-shadow: 0 4px 15px rgba(21, 101, 192, 0.15);
       margin-bottom: 15px;
     }
     .card-title {
       font-size: 1.3rem;
       font-weight: bold;
-      background: linear-gradient(135deg, #ff85a2, #ff6b8b);
+      background: linear-gradient(135deg, #1e88e5, #0d47a1); /* 深海藍漸層 */
       color: white;
       padding: 10px 15px;
       border-radius: 10px;
@@ -39,42 +39,42 @@
     .info-item {
       margin-bottom: 15px;
       padding-bottom: 10px;
-      border-bottom: 1px dashed #ffd1dc;
+      border-bottom: 1px dashed #bbdefb;
     }
     .info-item:last-child { border-bottom: none; }
-    .info-label { font-weight: bold; color: #ff6b8b; margin-bottom: 5px; }
+    .info-label { font-weight: bold; color: #1976d2; margin-bottom: 5px; }
 
     /* 獨立行程區塊與大小顏色控制 */
     .spot-card {
       background: white;
       border-radius: 16px;
       padding: 18px 20px;
-      box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.12);
       margin-bottom: 15px;
-      border-left: 5px solid #ff85a2;
+      border-left: 5px solid #1e88e5; /* 左側海洋藍邊條 */
     }
     .time { 
       font-weight: bold; 
-      color: #ff6b8b; 
-      font-size: 0.95rem; /* 時間字體中等 */
+      color: #0288d1; /* 時間文字顏色 */
+      font-size: 0.95rem;
       margin-bottom: 4px;
     }
     .spot-name { 
       font-size: 1.25rem; /* 行程主題字體加大 */
       font-weight: 800; 
       margin: 4px 0 10px 0; 
-      color: #d81b60; /* 鮮豔粉紅色 */
+      color: #0d47a1; /* 深海藍色標題 */
       line-height: 1.3;
     }
     .note { 
-      color: #555555; /* 備忘註記顏色較深易讀 */
-      font-size: 0.88rem; /* 備忘註記字體較小 */
+      color: #37474f; /* 備註內文 */
+      font-size: 0.88rem;
       margin: 0; 
       line-height: 1.6;
-      background-color: #fff0f3; /* 備忘欄位加淺粉底色 */
+      background-color: #e3f2fd; /* 備忘欄位淺藍底色 */
       padding: 8px 12px;
       border-radius: 8px;
-      border-left: 3px solid #ffb6c1;
+      border-left: 3px solid #64b5f6;
     }
 
     /* 底部橫向可滾動選單 */
@@ -90,7 +90,7 @@
       overflow-x: auto;
       white-space: nowrap;
       padding: 8px 15px;
-      box-shadow: 0 -2px 15px rgba(255, 182, 193, 0.3);
+      box-shadow: 0 -2px 15px rgba(25, 118, 210, 0.2);
       max-width: 600px;
       margin: 0 auto;
       z-index: 1000;
@@ -104,8 +104,8 @@
       margin-right: 8px;
       padding: 6px 14px;
       border: none;
-      background: #ffe3e8;
-      color: #ff6b8b;
+      background: #e1f5fe;
+      color: #0288d1;
       font-size: 0.85rem;
       font-weight: bold;
       border-radius: 16px;
@@ -116,9 +116,9 @@
     }
     .nav-btn:last-child { margin-right: 0; }
     .nav-btn.active {
-      background: linear-gradient(135deg, #ff85a2, #ff6b8b);
+      background: linear-gradient(135deg, #1e88e5, #0d47a1);
       color: white;
-      box-shadow: 0 2px 8px rgba(255, 107, 139, 0.4);
+      box-shadow: 0 2px 8px rgba(13, 71, 161, 0.4);
     }
     .nav-btn .sub-text {
       font-size: 0.95rem;
@@ -128,7 +128,7 @@
 </head>
 <body>
 
-  <h1>🌸 胖胖旅行團之九州篇</h1>
+  <h1>🏴‍☠️ 胖胖旅行團之九州篇</h1>
 
   <!-- 1. 資訊頁面 -->
   <div id="info" class="tab-content">
@@ -144,7 +144,7 @@
   <!-- 2. Day 1 行程 -->
   <div id="day1" class="tab-content active">
     
-    <div class="card-title" style="margin-bottom: 15px;">Day 1 行程概覽</div>
+    <div class="card-title" style="margin-bottom: 15px;">⚓ Day 1 行程概覽</div>
 
     <div class="spot-card">
       <div class="time">05:00</div>
