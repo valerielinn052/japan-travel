@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>胖胖旅行團之九州篇</title>
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     * {
       box-sizing: border-box;
@@ -13,27 +15,149 @@
       max-width: 600px;
       margin: 0 auto;
       padding: 15px 15px 95px 15px;
-      background: linear-gradient(135deg, #fef6e4 0%, #f3e5f5 50%, #e0f7fa 100%); /* 多彩柔和漸層背景 */
+      background: linear-gradient(135deg, #fef6e4 0%, #f3e5f5 50%, #e0f7fa 100%);
       background-attachment: fixed;
       color: #2d3748;
     }
     
+    .header-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px 0 20px 0;
+    }
     h1 { 
       text-align: center; 
       color: #2b6cb0; 
-      font-size: 1.6rem;
-      margin: 10px 0 20px 0; 
+      font-size: 1.5rem;
+      margin: 0 0 10px 0; 
       text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+    }
+    .map-btn {
+      background: linear-gradient(135deg, #3182ce, #2b6cb0);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .map-btn:active {
+      transform: scale(0.95);
     }
     
     /* 頁面分頁控制 */
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
+    /* ========== 地圖 Modal 彈窗 ========== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-container {
+      background: white;
+      width: 100%;
+      max-width: 560px;
+      height: 85vh;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      padding: 12px 18px;
+      background: linear-gradient(135deg, #2b6cb0, #1a365d);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #map {
+      width: 100%;
+      height: 55%;
+      z-index: 1;
+    }
+
+    .route-info-panel {
+      height: 45%;
+      background: #f8fafc;
+      padding: 12px 15px;
+      overflow-y: auto;
+      border-top: 2px solid #e2e8f0;
+    }
+    .route-title {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #2b6cb0;
+      margin-bottom: 8px;
+    }
+    .drive-item {
+      display: flex;
+      align-items: center;
+      margin: 6px 0;
+      font-size: 0.85rem;
+    }
+    .drive-time-tag {
+      background: #feebc8;
+      color: #c05621;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 0.78rem;
+      margin: 4px 0 4px 24px;
+      display: inline-block;
+      border: 1px solid #fbd38d;
+    }
+    .spot-dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #3182ce;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
+
     /* ========== 頂部毛玻璃半透明天氣卡 (Day 1) ========== */
     .weather-card {
-      background: rgba(255, 255, 255, 0.65); /* 半透明背景 */
-      backdrop-filter: blur(12px); /* 毛玻璃模糊效果 */
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 20px;
@@ -44,36 +168,17 @@
       align-items: center;
       justify-content: space-between;
     }
-    .weather-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .weather-location {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: #4a5568;
-      letter-spacing: 0.5px;
-    }
-    .weather-temp {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: #2b6cb0;
-      margin: 2px 0;
-    }
-    .weather-detail {
-      font-size: 0.78rem;
-      color: #718096;
-    }
-    .weather-icon {
-      font-size: 2.2rem;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    }
+    .weather-info { display: flex; flex-direction: column; }
+    .weather-location { font-size: 0.85rem; font-weight: bold; color: #4a5568; letter-spacing: 0.5px; }
+    .weather-temp { font-size: 1.4rem; font-weight: 800; color: #2b6cb0; margin: 2px 0; }
+    .weather-detail { font-size: 0.78rem; color: #718096; }
+    .weather-icon { font-size: 2.2rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 
     /* ========== 頁面標題 ========== */
     .card-title {
       font-size: 1.25rem;
       font-weight: bold;
-      background: linear-gradient(135deg, #ff7e5f, #feb47b); /* 繽紛暖陽漸層 */
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
       color: white;
       padding: 12px 18px;
       border-radius: 14px;
@@ -94,15 +199,9 @@
       border-left: 6px solid #ccc;
       transition: transform 0.15s ease;
     }
-    .spot-card:active {
-      transform: scale(0.98);
-    }
+    .spot-card:active { transform: scale(0.98); }
 
-    .time { 
-      font-weight: 800; 
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-    }
+    .time { font-weight: 800; font-size: 0.95rem; margin-bottom: 4px; }
     .spot-name { 
       font-size: 1.2rem; 
       font-weight: 800; 
@@ -115,7 +214,6 @@
       gap: 8px;
     }
     
-    /* 地圖連結按鈕 */
     .map-link {
       font-size: 0.8rem;
       font-weight: bold;
@@ -136,69 +234,63 @@
       border-radius: 10px;
     }
 
-    /* ========== 多色彩主題風格類別 ========== */
-
-    /* 1. 航班/交通 (藍色系) */
-    .type-flight {
-      border-left-color: #3182ce;
+    /* ========== 車程時間提示標籤 ========== */
+    .drive-time-badge {
+      text-align: center;
+      margin: -5px 0 12px 0;
+      font-size: 0.82rem;
+      font-weight: bold;
+      color: #dd6b20;
     }
+    .drive-time-badge span {
+      background: #fffaf0;
+      border: 1px dashed #fbd38d;
+      padding: 4px 14px;
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    /* ========== 多色彩主題風格類別 ========== */
+    .type-flight { border-left-color: #3182ce; }
     .type-flight .time { color: #2b6cb0; }
     .type-flight .spot-name { color: #1a365d; }
     .type-flight .map-link { background-color: #ebf8ff; color: #2b6cb0; border: 1px solid #bbe3fe; }
     .type-flight .note { background-color: #f0f8ff; color: #2c5282; border-left: 3px solid #63b3ed; }
 
-    /* 2. 租車/移動 (黃橙色系) */
-    .type-rental {
-      border-left-color: #dd6b20;
-    }
+    .type-rental { border-left-color: #dd6b20; }
     .type-rental .time { color: #c05621; }
     .type-rental .spot-name { color: #7b341e; }
     .type-rental .map-link { background-color: #fffaf0; color: #dd6b20; border: 1px solid #fbd38d; }
     .type-rental .note { background-color: #fffaf0; color: #9c4221; border-left: 3px solid #f6ad55; }
 
-    /* 3. 景點/海賊王銅像 (珊瑚紅橘系) */
-    .type-spot {
-      border-left-color: #e53e3e;
-    }
+    .type-spot { border-left-color: #e53e3e; }
     .type-spot .time { color: #c53030; }
     .type-spot .spot-name { color: #742a2a; }
     .type-spot .map-link { background-color: #fff5f5; color: #e53e3e; border: 1px solid #feb2b2; }
     .type-spot .note { background-color: #fff5f5; color: #9b2c2c; border-left: 3px solid #fc8181; }
 
-    /* 4. 購物/商場 (紫色系) */
-    .type-shop {
-      border-left-color: #805ad5;
-    }
+    .type-shop { border-left-color: #805ad5; }
     .type-shop .time { color: #6b46c1; }
     .type-shop .spot-name { color: #44337a; }
     .type-shop .map-link { background-color: #faf5ff; color: #805ad5; border: 1px solid #e9d8fd; }
     .type-shop .note { background-color: #faf5ff; color: #553c9a; border-left: 3px solid #b794f4; }
 
-    /* 5. 飯店住宿 (綠色系) */
-    .type-hotel {
-      border-left-color: #38a169;
-    }
+    .type-hotel { border-left-color: #38a169; }
     .type-hotel .time { color: #2f855a; }
     .type-hotel .spot-name { color: #1c4532; }
     .type-hotel .map-link { background-color: #f0fff4; color: #38a169; border: 1px solid #c6f6d5; }
     .type-hotel .note { background-color: #f0fff4; color: #276749; border-left: 3px solid #68d391; }
 
-    /* 6. 美食/晚餐 (粉熱情系) */
-    .type-food {
-      border-left-color: #d53f8c;
-    }
+    .type-food { border-left-color: #d53f8c; }
     .type-food .time { color: #b83280; }
     .type-food .spot-name { color: #702459; }
     .type-food .map-link { background-color: #fff5f7; color: #d53f8c; border: 1px solid #fed7e2; }
     .type-food .note { background-color: #fff5f7; color: #97266d; border-left: 3px solid #fbb6ce; }
 
-
     /* ========== 底部彩色滾動選單 ========== */
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -245,7 +337,10 @@
 </head>
 <body>
 
-  <h1>🏴‍☠️ 胖胖旅行團之九州篇</h1>
+  <div class="header-container">
+    <h1>🏴‍☠️ 胖胖旅行團之九州篇</h1>
+    <button class="map-btn" onclick="openDayMap()">🗺️ 查看今日全景路線圖 & 車程</button>
+  </div>
 
   <!-- 1. 資訊頁面 -->
   <div id="info" class="tab-content">
@@ -299,41 +394,61 @@
       </p>
     </div>
 
+    <!-- 車程時間提示 1 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 40 分鐘</span>
+    </div>
+
     <!-- 3. 海賊王銅像 1：香吉士 -->
     <div class="spot-card type-spot">
       <div class="time">12:40 - 13:10</div>
       <div class="spot-name">
-        <span>🏴‍☠️ Sanji Statue</span>
+        <span>🏴‍☠️ Sanji Statue (益城町)</span>
         <a href="https://maps.google.com/?q=Sanji+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
       </div>
       <p class="note">★ 營業時間：09:00 ~ 20:00 (每週一休息)</p>
+    </div>
+
+    <!-- 車程時間提示 2 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 15 分鐘</span>
     </div>
 
     <!-- 4. 海賊王銅像 2：布魯克 -->
     <div class="spot-card type-spot">
       <div class="time">13:25 - 13:55</div>
       <div class="spot-name">
-        <span>🏴‍☠️ Brook Statue</span>
+        <span>🏴‍☠️ Brook Statue (御船町)</span>
         <a href="https://maps.google.com/?q=Brook+Statue+Mifune" target="_blank" class="map-link">📍 地圖</a>
       </div>
       <p class="note">★ 營業時間：09:00 ~ 17:00 (每週一、四休息)</p>
+    </div>
+
+    <!-- 車程時間提示 3 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 20 分鐘</span>
     </div>
 
     <!-- 5. 海賊王銅像 3：喬巴 -->
     <div class="spot-card type-spot">
       <div class="time">14:15 - 14:45</div>
       <div class="spot-name">
-        <span>🏴‍☠️ Chopper Statue</span>
+        <span>🏴‍☠️ Chopper Statue (動植物園)</span>
         <a href="https://maps.google.com/?q=Chopper+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
       </div>
       <p class="note">★ 營業時間：09:00 ~ 16:30 (每週一、二休息)</p>
+    </div>
+
+    <!-- 車程時間提示 4 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 10 分鐘</span>
     </div>
 
     <!-- 6. 海賊王銅像 4：魯夫 -->
     <div class="spot-card type-spot">
       <div class="time">14:55 - 15:25</div>
       <div class="spot-name">
-        <span>🏴‍☠️ Luffy Statue</span>
+        <span>🏴‍☠️ Luffy Statue (熊本縣廳)</span>
         <a href="https://maps.google.com/?q=Luffy+Statue+Kumamoto" target="_blank" class="map-link">📍 地圖</a>
       </div>
       <p class="note">
@@ -342,17 +457,27 @@
       </p>
     </div>
 
+    <!-- 車程時間提示 5 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 40 分鐘</span>
+    </div>
+
     <!-- 7. 海賊王銅像 5：吉貝爾 -->
     <div class="spot-card type-spot">
       <div class="time">16:05 - 16:45</div>
       <div class="spot-name">
-        <span>🏴‍☠️ Jinbe Statue</span>
+        <span>🏴‍☠️ Jinbe Statue (宇土市)</span>
         <a href="https://maps.google.com/?q=Jinbe+Statue+Uto" target="_blank" class="map-link">📍 地圖</a>
       </div>
       <p class="note">
         ★ 營業時間：10:00 ~ 19:00<br>
         ★ 長部田海床路
       </p>
+    </div>
+
+    <!-- 車程時間提示 6 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 30 分鐘</span>
     </div>
 
     <!-- 8. 購物 -->
@@ -366,6 +491,11 @@
         ★ 營業時間：10:00 ~ 20:00<br>
         ▲ 海賊王商店 6F
       </p>
+    </div>
+
+    <!-- 車程時間提示 7 -->
+    <div class="drive-time-badge">
+      <span>🚗 開車約 15 分鐘</span>
     </div>
 
     <!-- 9. 飯店 -->
@@ -408,6 +538,43 @@
   <div id="day7" class="tab-content"><div class="card-title">Day 7</div></div>
   <div id="day8" class="tab-content"><div class="card-title">Day 8</div></div>
 
+  <!-- 地圖彈窗 Modal -->
+  <div class="modal-overlay" id="mapModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <span>🗺️ Day 1 全景路線圖與車程</span>
+        <button class="modal-close" onclick="closeDayMap()">✕</button>
+      </div>
+      <div id="map"></div>
+      <div class="route-info-panel">
+        <div class="route-title">🚗 Day 1 導航與景點間車程預估</div>
+        
+        <div class="drive-item"><span class="spot-dot">1</span> <b>Budget 租車 熊本機場店</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 40 分鐘 (16 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">2</span> <b>🏴‍☠️ 香吉士像 (益城町交流情報中心)</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 15 分鐘 (8 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">3</span> <b>🏴‍☠️ 布魯克像 (御船町恐龍博物館前)</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 20 分鐘 (10 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">4</span> <b>🏴‍☠️ 喬巴像 (熊本市動植物園)</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 10 分鐘 (4 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">5</span> <b>🏴‍☠️ 魯夫像 (熊本縣廳前)</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 40 分鐘 (21 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">6</span> <b>🏴‍☠️ 吉貝爾像 (長部田海床路)</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 30 分鐘 (16 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA 熊本 (熊本車站)</b></div>
+        <div class="drive-time-tag">⏱️ 移動車程：約 15 分鐘 (3 km)</div>
+        
+        <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA (飯店)</b></div>
+      </div>
+    </div>
+  </div>
+
   <!-- 底部選單 -->
   <div class="bottom-nav">
     <button class="nav-btn" onclick="switchTab('info', this)">ℹ️<span class="sub-text">資訊</span></button>
@@ -421,6 +588,8 @@
     <button class="nav-btn" onclick="switchTab('day8', this)">9/12<span class="sub-text">D8</span></button>
   </div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     function switchTab(tabId, btn) {
       const contents = document.querySelectorAll('.tab-content');
@@ -433,6 +602,52 @@
       btn.classList.add('active');
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    let map = null;
+    const day1Spots = [
+      { name: "1. Budget 租車 熊本機場店", lat: 32.8364, lng: 130.8525 },
+      { name: "2. 🏴‍☠️ 香吉士像 (益城町)", lat: 32.7931, lng: 130.8169 },
+      { name: "3. 🏴‍☠️ 布魯克像 (御船町)", lat: 32.7169, lng: 130.8038 },
+      { name: "4. 🏴‍☠️ 喬巴像 (動植物園)", lat: 32.7788, lng: 130.7511 },
+      { name: "5. 🏴‍☠️ 魯夫像 (熊本縣廳)", lat: 32.7894, lng: 130.7416 },
+      { name: "6. 🏴‍☠️ 吉貝爾像 (海床路)", lat: 32.6953, lng: 130.6033 },
+      { name: "7. 🛍️ AMU PLAZA 熊本", lat: 32.7898, lng: 130.6886 },
+      { name: "8. 🏨 SOTETSU GRAND FRESA", lat: 32.8016, lng: 130.7078 }
+    ];
+
+    function openDayMap() {
+      document.getElementById('mapModal').classList.add('active');
+
+      if (!map) {
+        // 初始化 Leaflet 地圖
+        map = L.map('map').setView([32.77, 130.73], 11);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap'
+        }).addTo(map);
+
+        const latlngs = [];
+
+        day1Spots.forEach(spot => {
+          latlngs.push([spot.lat, spot.lng]);
+          L.marker([spot.lat, spot.lng])
+            .addTo(map)
+            .bindPopup(`<b>${spot.name}</b>`);
+        });
+
+        // 畫出景點之間的連線
+        const polyline = L.polyline(latlngs, { color: '#e53e3e', weight: 4, opacity: 0.8, dashArray: '8, 8' }).addTo(map);
+
+        // 自動調整鏡頭視角包覆所有景點
+        map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+      } else {
+        setTimeout(() => map.invalidateSize(), 200);
+      }
+    }
+
+    function closeDayMap() {
+      document.getElementById('mapModal').classList.remove('active');
     }
   </script>
 
