@@ -28,7 +28,7 @@
       margin-bottom: 15px;
     }
     .card-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: bold;
       background: linear-gradient(135deg, #ff85a2, #ff6b8b);
       color: white;
@@ -44,18 +44,38 @@
     .info-item:last-child { border-bottom: none; }
     .info-label { font-weight: bold; color: #ff6b8b; margin-bottom: 5px; }
 
-    /* 獨立行程區塊樣式 */
+    /* 獨立行程區塊與大小顏色控制 */
     .spot-card {
       background: white;
       border-radius: 16px;
-      padding: 16px 20px;
+      padding: 18px 20px;
       box-shadow: 0 4px 12px rgba(255, 182, 193, 0.15);
       margin-bottom: 15px;
       border-left: 5px solid #ff85a2;
     }
-    .time { font-weight: bold; color: #ff6b8b; font-size: 0.95rem; }
-    .spot-name { font-size: 1.1rem; font-weight: bold; margin: 6px 0; color: #333; }
-    .note { color: #666; font-size: 0.95rem; margin: 0; line-height: 1.5; }
+    .time { 
+      font-weight: bold; 
+      color: #ff6b8b; 
+      font-size: 0.95rem; /* 時間字體中等 */
+      margin-bottom: 4px;
+    }
+    .spot-name { 
+      font-size: 1.25rem; /* 行程主題字體加大 */
+      font-weight: 800; 
+      margin: 4px 0 10px 0; 
+      color: #d81b60; /* 鮮豔粉紅色 */
+      line-height: 1.3;
+    }
+    .note { 
+      color: #555555; /* 備忘註記顏色較深易讀 */
+      font-size: 0.88rem; /* 備忘註記字體較小 */
+      margin: 0; 
+      line-height: 1.6;
+      background-color: #fff0f3; /* 備忘欄位加淺粉底色 */
+      padding: 8px 12px;
+      border-radius: 8px;
+      border-left: 3px solid #ffb6c1;
+    }
 
     /* 底部橫向可滾動選單 */
     .bottom-nav {
