@@ -410,7 +410,7 @@
 
     .time-badge {
       flex-shrink: 0;
-      width: 65px;
+      width: 78px;
       height: 52px;
       background-color: #eff6ff;
       border: 1px solid #dbeafe;
@@ -419,11 +419,13 @@
       justify-content: center;
       align-items: center;
       padding: 4px;
+      text-align: center;
     }
     .time-single {
-      font-size: 0.95rem;
+      font-size: 0.78rem;
       font-weight: 800;
       color: #2563eb;
+      line-height: 1.2;
     }
 
     .info-content {
@@ -590,7 +592,7 @@
 
     <!-- 2. 租車 -->
     <div class="main-card" onclick="openExpenseModal('day1', 'budget 租車')">
-      <div class="time-badge"><span class="time-single">11:45</span></div>
+      <div class="time-badge"><span class="time-single">11:45 ~<br>12:30</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -599,14 +601,14 @@
           </div>
           <a href="https://maps.google.com/?q=Budget+Rent+a+Car+Kumamoto+Airport" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 機場入境後左轉 ➔ sorayoka遊客中心<br>▲ 預約 12:00 (未租ETC)</p>
+        <p class="note">★ 機場入境後左轉 ➔ sorayoka餐廳區 ➔ sorayoka公園(外面) ➔ sorayoka遊客中心(尋找租車櫃台)<br>★ 櫃台協助聯絡接駁車 (搭乘時間約5分鐘)<br>▲ 預約 12:00 (未租ETC)</p>
         <div class="cost-badge" id="badge-day1-budget 租車"></div>
       </div>
     </div>
 
     <!-- 3. Sanji Statue -->
     <div class="main-card" onclick="openExpenseModal('day1', 'Sanji Statue')">
-      <div class="time-badge"><span class="time-single">12:40</span></div>
+      <div class="time-badge"><span class="time-single">12:40 ~<br>13:10</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -622,7 +624,7 @@
 
     <!-- 4. Brook Statue -->
     <div class="main-card" onclick="openExpenseModal('day1', 'Brook Statue')">
-      <div class="time-badge"><span class="time-single">13:25</span></div>
+      <div class="time-badge"><span class="time-single">13:25 ~<br>13:55</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -638,7 +640,7 @@
 
     <!-- 5. Chopper Statue -->
     <div class="main-card" onclick="openExpenseModal('day1', 'Chopper Statue')">
-      <div class="time-badge"><span class="time-single">14:15</span></div>
+      <div class="time-badge"><span class="time-single">14:15 ~<br>14:45</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -654,7 +656,7 @@
 
     <!-- 6. Rufi Statue -->
     <div class="main-card" onclick="openExpenseModal('day1', 'Rufi Statue')">
-      <div class="time-badge"><span class="time-single">14:55</span></div>
+      <div class="time-badge"><span class="time-single">14:55 ~<br>15:25</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -663,14 +665,14 @@
           </div>
           <a href="https://maps.google.com/?q=Luffy+Statue+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 營業時間：09:00 ~ 16:30 (Teresa飯店大廳)</p>
+        <p class="note">★ 營業時間：09:00 ~ 16:30 (Teresa飯店大廳)<br>▲ 銅像步行 3 分鐘</p>
         <div class="cost-badge" id="badge-day1-Rufi Statue"></div>
       </div>
     </div>
 
     <!-- 7. Jinbe Statue -->
     <div class="main-card" onclick="openExpenseModal('day1', 'Jinbe Statue')">
-      <div class="time-badge"><span class="time-single">16:05</span></div>
+      <div class="time-badge"><span class="time-single">16:05 ~<br>16:45</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -679,14 +681,14 @@
           </div>
           <a href="https://maps.google.com/?q=Jinbe+Statue+Uto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 長部田海床路 (營業時間：10:00 ~ 19:00)</p>
+        <p class="note">★ 營業時間：10:00 ~ 19:00<br>★ 長部田海床路</p>
         <div class="cost-badge" id="badge-day1-Jinbe Statue"></div>
       </div>
     </div>
 
     <!-- 8. AMU PLAZA -->
     <div class="main-card" onclick="openExpenseModal('day1', 'AMU PLAZA 熊本')">
-      <div class="time-badge"><span class="time-single">17:15</span></div>
+      <div class="time-badge"><span class="time-single">17:15 ~<br>19:15</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -695,33 +697,40 @@
           </div>
           <a href="https://maps.google.com/?q=AMU+PLAZA+Kumamoto" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 海賊王商店 6F (10:00 ~ 20:00)</p>
+        <p class="note">★ 營業時間：10:00 ~ 20:00<br>▲ 海賊王商店 6F</p>
         <div class="cost-badge" id="badge-day1-AMU PLAZA 熊本"></div>
       </div>
     </div>
 
     <!-- 9. 飯店 -->
-    <div class="main-card" onclick="openExpenseModal('day1', 'SOTETSU GRAND FRESA')">
+    <div class="main-card" onclick="openExpenseModal('day1', 'SOTETSU GRAND FRESA KUMAMOTO')">
       <div class="time-badge"><span class="time-single">🏨 入住</span></div>
       <div class="info-content">
         <div class="spot-header">
-          <div class="spot-title-group"><span class="spot-name">🏨 SOTETSU GRAND FRESA</span></div>
+          <div class="spot-title-group"><span class="spot-name">🏨 SOTETSU GRAND FRESA KUMAMOTO</span></div>
           <a href="https://maps.google.com/?q=SOTETSU+GRAND+FRESA+KUMAMOTO" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ Check-in 15:00 ~ 24:00</p>
-        <div class="cost-badge" id="badge-day1-SOTETSU GRAND FRESA"></div>
+        <p class="note">★ Check-in 時間：15:00 ~ 24:00<br>▲ 早餐時段：06:30 ~ 09:30</p>
+        <div class="cost-badge" id="badge-day1-SOTETSU GRAND FRESA KUMAMOTO"></div>
       </div>
     </div>
 
     <!-- 10. 晚餐 -->
-    <div class="main-card" onclick="openExpenseModal('day1', '晚餐/購物')">
+    <div class="main-card" onclick="openExpenseModal('day1', '吃晚餐/購物')">
       <div class="time-badge"><span class="time-single">晚餐</span></div>
       <div class="info-content">
         <div class="spot-header">
-          <div class="spot-title-group"><span class="spot-name">🍽️ 晚餐 & 周邊購物</span></div>
+          <div class="spot-title-group"><span class="spot-name">🍽️ 吃晚餐 (地點未決定) & 購物</span></div>
         </div>
-        <p class="note">★ 附近有 JINS, 松本清, 唐吉訶德等</p>
-        <div class="cost-badge" id="badge-day1-晚餐/購物"></div>
+        <p class="note">
+          ★ 飯店附近商店營業時間：<br>
+          ➀ JINS：10:00 ~ 20:00<br>
+          ② COCOSA：11:00 ~ 20:00<br>
+          ➂ Carino：10:00 ~ 23:00 (部分到 21:00)<br>
+          ➃ 松本清：09:00 ~ 01:00<br>
+          ➄ 唐吉訶德：09:00 ~ 05:00
+        </p>
+        <div class="cost-badge" id="badge-day1-吃晚餐/購物"></div>
       </div>
     </div>
 
@@ -760,7 +769,7 @@
         <div class="route-distance-info">🚗 距離約 17.5 KM ｜ 車程約 30 分鐘</div>
         <div class="drive-item"><span class="spot-dot">7</span> <b>🛍️ AMU PLAZA 熊本</b></div>
         <div class="route-distance-info">🚗 距離約 2.8 KM ｜ 車程約 10 分鐘</div>
-        <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA</b></div>
+        <div class="drive-item"><span class="spot-dot">8</span> <b>🏨 SOTETSU GRAND FRESA KUMAMOTO</b></div>
       </div>
     </div>
   </div>
@@ -980,7 +989,7 @@
       { name: "5. 🏴‍☠️ Rufi Statue", lat: 32.7894, lng: 130.7416 },
       { name: "6. 🏴‍☠️ Jinbe Statue", lat: 32.6953, lng: 130.6033 },
       { name: "7. 🛍️ AMU PLAZA 熊本", lat: 32.7898, lng: 130.6886 },
-      { name: "8. 🏨 SOTETSU GRAND FRESA", lat: 32.8016, lng: 130.7078 }
+      { name: "8. 🏨 SOTETSU GRAND FRESA KUMAMOTO", lat: 32.8016, lng: 130.7078 }
     ];
 
     function openDayMap() {
