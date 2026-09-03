@@ -865,7 +865,278 @@
   </div>
 
   <!-- 其他天數預留 D2 ~ D8 -->
-  <div id="day2" class="tab-content"><div class="card-title">Day 2 行程 (預留)</div></div>
+ <!-- 2. Day 2 行程 -->
+  <div id="day2" class="tab-content">
+    
+    <div class="weather-card">
+      <div class="weather-info">
+        <span class="weather-location">📍 阿蘇市 Aso (預設氣象)</span>
+        <span class="weather-temp">⛅ 20°C - 28°C</span>
+        <span class="weather-detail">多雲時晴 ｜ 建議準備輕便外衣</span>
+      </div>
+      <div class="weather-icon">⛅</div>
+    </div>
+
+    <div class="card-title">
+      <span>⚔️ Day 2</span>
+      <span style="font-size: 0.85rem; font-weight: normal; opacity: 0.9;">2026/09/06 (日)</span>
+    </div>
+
+    <!-- 1. 早餐 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '吃早餐 (飯店)')">
+      <div class="time-badge"><span class="time-single">08:00</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group"><span class="spot-name">🍳 吃早餐 (Sotetsu Grand Fresa)</span></div>
+        </div>
+        <p class="note">★ 早餐供應時間：06:30 ~ 09:30</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-吃早餐 (飯店)"></div>
+          <div class="checklist-badge" id="chkbadge-day2-吃早餐 (飯店)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. 熊本城 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '熊本城')">
+      <div class="time-badge"><span class="time-single">09:00</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/1
+            <span class="spot-name">🏯 [熊本城](http://googleusercontent.com/map_location_reference/0)</span>
+            <span class="duration-tag">⏱️ 1 hr</span>
+          </div>
+          <a href="https://maps.google.com/?cid=6812651872500704304" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：09:00 ~ 17:00<br>🚗 開車前往，車程約 10 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-熊本城"></div>
+          <div class="checklist-badge" id="chkbadge-day2-熊本城"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 加藤神社 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '加藤神社')">
+      <div class="time-badge"><span class="time-single">10:05</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/3
+            <span class="spot-name">⛩️ [加藤神社](http://googleusercontent.com/map_location_reference/2)</span>
+            <span class="duration-tag">⏱️ 25m</span>
+          </div>
+          <a href="https://maps.google.com/?cid=18360173129014693037" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：08:00 ~ 17:00<br>🚶 步行/開車約 5 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-加藤神社"></div>
+          <div class="checklist-badge" id="chkbadge-day2-加藤神社"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 熊本城稻荷神社 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '熊本城稻荷神社')">
+      <div class="time-badge"><span class="time-single">10:40</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/5
+            <span class="spot-name">🦊 [熊本城稻荷神社](http://googleusercontent.com/map_location_reference/4)</span>
+            <span class="duration-tag">⏱️ 30m</span>
+          </div>
+          <a href="https://maps.google.com/?cid=648899056023670925" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：09:00 ~ 17:00<br>🚶 步行/開車約 10 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-熊本城稻荷神社"></div>
+          <div class="checklist-badge" id="chkbadge-day2-熊本城稻荷神社"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. 櫻之馬場 城彩苑 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '櫻之馬場 城彩苑')">
+      <div class="time-badge"><span class="time-single">11:20</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/7
+            <span class="spot-name">🍱 [櫻之馬場 城彩苑](http://googleusercontent.com/map_location_reference/6)</span>
+            <span class="duration-tag">⏱️ 1.5 hrs</span>
+          </div>
+          <a href="https://maps.google.com/?cid=4335317393072890667" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：09:00 ~ 18:00<br>🍱 安排吃午餐<br>🚶 步行/開車約 9 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-櫻之馬場 城彩苑"></div>
+          <div class="checklist-badge" id="chkbadge-day2-櫻之馬場 城彩苑"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Zoro Statue -->
+    <div class="main-card" onclick="openExpenseModal('day2', 'Zoro statue')">
+      <div class="time-badge"><span class="time-single">13:40</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/9
+            <span class="spot-name">🏴‍☠️ [Zoro Statue](http://googleusercontent.com/map_location_reference/8)</span>
+            <span class="duration-tag">⏱️ 20m</span>
+          </div>
+          <a href="https://maps.google.com/?cid=10218230917267147341" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：11:00 ~ 17:00 (每週四五休息)<br>🚗 開車，車程約 40 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-Zoro statue"></div>
+          <div class="checklist-badge" id="chkbadge-day2-Zoro statue"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Nami Statue -->
+    <div class="main-card" onclick="openExpenseModal('day2', 'Nami statue')">
+      <div class="time-badge"><span class="time-single">14:15</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/11
+            <span class="spot-name">🏴‍☠️ [Nami Statue](http://googleusercontent.com/map_location_reference/10)</span>
+            <span class="duration-tag">⏱️ 20m</span>
+          </div>
+          <a href="https://maps.google.com/?cid=13186013069580171696" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：09:00 ~ 17:00<br>🚗 開車，車程約 15 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-Nami statue"></div>
+          <div class="checklist-badge" id="chkbadge-day2-Nami statue"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Robin Statue -->
+    <div class="main-card" onclick="openExpenseModal('day2', 'Robin statue')">
+      <div class="time-badge"><span class="time-single">15:00</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/13
+            <span class="spot-name">🏴‍☠️ [Robin Statue](http://googleusercontent.com/map_location_reference/12)</span>
+            <span class="duration-tag">⏱️ 20m</span>
+          </div>
+          <a href="https://maps.google.com/?cid=18019151191284360127" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：09:00 ~ 17:00 (每週一休息)<br>🚗 開車，車程約 25 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-Robin statue"></div>
+          <div class="checklist-badge" id="chkbadge-day2-Robin statue"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Franky Statue -->
+    <div class="main-card" onclick="openExpenseModal('day2', 'Franky statue')">
+      <div class="time-badge"><span class="time-single">15:45</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/15
+            <span class="spot-name">🏴‍☠️ [Franky Statue](http://googleusercontent.com/map_location_reference/14)</span>
+            <span class="duration-tag">⏱️ 20m</span>
+          </div>
+          <a href="https://maps.google.com/?cid=17280541962999343107" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：06:00 ~ 22:30<br>🚗 開車，車程約 25 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-Franky statue"></div>
+          <div class="checklist-badge" id="chkbadge-day2-Franky statue"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. 上色見熊野座神社 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '上色見熊野座神社')">
+      <div class="time-badge"><span class="time-single">16:15</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/17
+            <span class="spot-name">⛩️ [上色見熊野座神社](http://googleusercontent.com/map_location_reference/16)</span>
+            <span class="duration-tag">⏱️ 1 hr</span>
+          </div>
+          <a href="https://maps.google.com/?cid=8464286624988710782" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 24 小時營業<br>🚗 開車，車程約 10 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-上色見熊野座神社"></div>
+          <div class="checklist-badge" id="chkbadge-day2-上色見熊野座神社"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ★ Mont-bell -->
+    <div class="main-card" onclick="openExpenseModal('day2', 'Mont-bell')">
+      <div class="time-badge"><span class="time-single">★ 備選</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group">
+
+http://googleusercontent.com/map_location_reference/19
+            <span class="spot-name">🛍️ [Montbell](http://googleusercontent.com/map_location_reference/18) (南阿蘇)</span>
+          </div>
+          <a href="https://maps.google.com/?cid=8391891435376644894" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
+        </div>
+        <p class="note">★ 營業時間：09:00 ~ 18:00<br>🚗 開車，車程約 25 分鐘</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-Mont-bell"></div>
+          <div class="checklist-badge" id="chkbadge-day2-Mont-bell"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. 飯店 Check-in -->
+    <div class="main-card" onclick="openExpenseModal('day2', '阿蘇市民宿 Check-in')">
+      <div class="time-badge"><span class="time-single">Check-in</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group"><span class="spot-name">🏡 阿蘇市民宿 Check-in</span></div>
+        </div>
+        <p class="note">★ Check-in 時間：16:00 ~ 19:00 (已確認 ✓)<br>♨️ 洗澡開放時間：16:00 ~ 22:00</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-阿蘇市民宿 Check-in"></div>
+          <div class="checklist-badge" id="chkbadge-day2-阿蘇市民宿 Check-in"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. 吃晚餐 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '吃晚餐 (阿蘇)')">
+      <div class="time-badge"><span class="time-single">Dinner</span></div>
+      <div class="info-content">
+        <div class="spot-header">
+          <div class="spot-title-group"><span class="spot-name">🍽️ 吃晚餐</span></div>
+        </div>
+        <p class="note">★ 餐廳：未決定 (可在周邊自由選擇)</p>
+        <div class="badge-group">
+          <div class="cost-badge" id="badge-day2-吃晚餐 (阿蘇)"></div>
+          <div class="checklist-badge" id="chkbadge-day2-吃晚餐 (阿蘇)"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
   <div id="day3" class="tab-content"><div class="card-title">Day 3 行程 (預留)</div></div>
   <div id="day4" class="tab-content"><div class="card-title">Day 4 行程 (預留)</div></div>
   <div id="day5" class="tab-content"><div class="card-title">Day 5 行程 (預留)</div></div>
