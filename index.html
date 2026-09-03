@@ -869,11 +869,11 @@
     
     <div class="weather-card">
       <div class="weather-info">
-        <span class="weather-location">📍 阿蘇市 Aso (預設氣象)</span>
-        <span class="weather-temp">⛅ 20°C - 28°C</span>
-        <span class="weather-detail">多雲時晴 ｜ 建議準備輕便外衣</span>
+        <span class="weather-location">📍 阿蘇市 Aso (即時氣象)</span>
+        <span class="weather-temp" id="aso-temp">⏳ 連線更新中...</span>
+        <span class="weather-detail" id="aso-detail">正在取得氣象資料...</span>
       </div>
-      <div class="weather-icon">⛅</div>
+      <div class="weather-icon" id="aso-icon">⛅</div>
     </div>
 
     <div class="card-title">
@@ -922,7 +922,7 @@
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">⛩️ 加藤神社</span>
-            <span class="duration-tag">⏱️ 25m</span>
+            <span class="duration-tag">⏱️ 30m</span>
           </div>
           <a href="https://maps.google.com/?q=Kato+Shrine" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
@@ -934,37 +934,37 @@
       </div>
     </div>
 
-    <!-- 4. 熊本城稻荷神社 -->
-    <div class="main-card" onclick="openExpenseModal('day2', '熊本城稻荷神社')">
-      <div class="time-badge"><span class="time-single">10:40</span></div>
+    <!-- 4. 稻荷神社 -->
+    <div class="main-card" onclick="openExpenseModal('day2', '稻荷神社')">
+      <div class="time-badge"><span class="time-single">10:45</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
-            <span class="spot-name">🦊 熊本城稻荷神社</span>
+            <span class="spot-name">🦊 稻荷神社</span>
             <span class="duration-tag">⏱️ 30m</span>
           </div>
           <a href="https://maps.google.com/?q=Kumamoto+Castle+Inari+Shrine" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
         <p class="note">★ 營業時間：09:00 ~ 17:00<br>🚶 步行約 10 分鐘</p>
         <div class="badge-group">
-          <div class="cost-badge" id="badge-day2-熊本城稻荷神社"></div>
-          <div class="checklist-badge" id="chkbadge-day2-熊本城稻荷神社"></div>
+          <div class="cost-badge" id="badge-day2-稻荷神社"></div>
+          <div class="checklist-badge" id="chkbadge-day2-稻荷神社"></div>
         </div>
       </div>
     </div>
 
     <!-- 5. 櫻之馬場 城彩苑 -->
     <div class="main-card" onclick="openExpenseModal('day2', '櫻之馬場 城彩苑')">
-      <div class="time-badge"><span class="time-single">11:20</span></div>
+      <div class="time-badge"><span class="time-single">11:25</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
             <span class="spot-name">🍱 櫻之馬場 城彩苑</span>
-            <span class="duration-tag">⏱️ 1.5 hrs</span>
+            <span class="duration-tag">⏱️ 1.4 hrs</span>
           </div>
           <a href="https://maps.google.com/?q=Josaien" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 營業時間：09:00 ~ 18:00<br>🍱 安排吃午餐</p>
+        <p class="note">★ 營業時間：09:00 ~ 18:00<br>🍱 安排吃午餐<br>🚶 步行約 9 分鐘</p>
         <div class="badge-group">
           <div class="cost-badge" id="badge-day2-櫻之馬場 城彩苑"></div>
           <div class="checklist-badge" id="chkbadge-day2-櫻之馬場 城彩苑"></div>
@@ -974,7 +974,7 @@
 
     <!-- 6. Zoro Statue -->
     <div class="main-card" onclick="openExpenseModal('day2', 'Zoro statue')">
-      <div class="time-badge"><span class="time-single">13:40</span></div>
+      <div class="time-badge"><span class="time-single">13:30</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -993,7 +993,7 @@
 
     <!-- 7. Nami Statue -->
     <div class="main-card" onclick="openExpenseModal('day2', 'Nami statue')">
-      <div class="time-badge"><span class="time-single">14:15</span></div>
+      <div class="time-badge"><span class="time-single">14:05</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -1002,7 +1002,7 @@
           </div>
           <a href="https://maps.google.com/?q=Nami+Statue+Nishihara" target="_blank" class="map-link" onclick="event.stopPropagation()">📍 地圖</a>
         </div>
-        <p class="note">★ 營業時間：09:00 ~ 17:00
+        <p class="note">★ 營業時間：09:00 ~ 17:00</p>
         <div class="badge-group">
           <div class="cost-badge" id="badge-day2-Nami statue"></div>
           <div class="checklist-badge" id="chkbadge-day2-Nami statue"></div>
@@ -1012,7 +1012,7 @@
 
     <!-- 8. Robin Statue -->
     <div class="main-card" onclick="openExpenseModal('day2', 'Robin statue')">
-      <div class="time-badge"><span class="time-single">15:00</span></div>
+      <div class="time-badge"><span class="time-single">14:50</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -1031,7 +1031,7 @@
 
     <!-- 9. Franky Statue -->
     <div class="main-card" onclick="openExpenseModal('day2', 'Franky statue')">
-      <div class="time-badge"><span class="time-single">15:45</span></div>
+      <div class="time-badge"><span class="time-single">15:35</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -1050,7 +1050,7 @@
 
     <!-- 10. 上色見熊野座神社 -->
     <div class="main-card" onclick="openExpenseModal('day2', '上色見熊野座神社')">
-      <div class="time-badge"><span class="time-single">16:15</span></div>
+      <div class="time-badge"><span class="time-single">16:05</span></div>
       <div class="info-content">
         <div class="spot-header">
           <div class="spot-title-group">
@@ -1854,10 +1854,15 @@
       });
     }
 
-    /* ========== 氣象 API ========== */
-    async function fetchKumamotoWeather() {
-      const lat = 32.7898;
-      const lng = 130.6886;
+    /* ========== 氣象 API（同時抓取熊本市與阿蘇市即時氣候） ========== */
+    async function fetchAllWeather() {
+      // 1. 熊本市 (Day 1)
+      fetchWeather(32.7898, 130.6886, 'api-temp', 'api-detail', 'api-icon');
+      // 2. 阿蘇市 (Day 2)
+      fetchWeather(32.9372, 131.0478, 'aso-temp', 'aso-detail', 'aso-icon');
+    }
+
+    async function fetchWeather(lat, lng, tempId, detailId, iconId) {
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo`;
 
       try {
@@ -1878,18 +1883,21 @@
         else if (weatherCode >= 80 && weatherCode <= 82) { weatherText = "陣雨"; weatherIcon = "🌦️"; }
         else if (weatherCode >= 95) { weatherText = "雷雨"; weatherIcon = "🌩️"; }
 
-        document.getElementById('api-temp').innerText = `${weatherIcon} ${currentTemp}°C (${minTemp}°C - ${maxTemp}°C)`;
-        document.getElementById('api-detail').innerText = `${weatherText} ｜ 即時連線更新`;
-        document.getElementById('api-icon').innerText = weatherIcon;
+        const tempEl = document.getElementById(tempId);
+        const detailEl = document.getElementById(detailId);
+        const iconEl = document.getElementById(iconId);
+
+        if (tempEl) tempEl.innerText = `${weatherIcon} ${currentTemp}°C (${minTemp}°C - ${maxTemp}°C)`;
+        if (detailEl) detailEl.innerText = `${weatherText} ｜ 即時連線更新`;
+        if (iconEl) iconEl.innerText = weatherIcon;
 
       } catch (error) {
-        document.getElementById('api-temp').innerText = "⛅ 21°C - 30°C";
-        document.getElementById('api-detail').innerText = "天氣資訊取得失敗，顯示預設值";
+        console.error("天氣資訊取得失敗:", error);
       }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      fetchKumamotoWeather();
+      fetchAllWeather();
       renderAllBadges();
     });
   </script>
