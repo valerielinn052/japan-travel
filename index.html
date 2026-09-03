@@ -163,12 +163,14 @@
       flex-shrink: 0;
     }
     .route-distance-info {
-      margin-left: 32px;
-      padding-left: 8px;
+      margin-left: 11px;
+      padding-left: 20px;
       border-left: 2px dashed #cbd5e1;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: #64748b;
-      line-height: 1.6;
+      line-height: 1.8;
+      margin-top: 2px;
+      margin-bottom: 2px;
     }
 
     /* ========== 匯率計算機樣式 ========== */
@@ -1382,26 +1384,26 @@
 
     // Day 1 景點資料
     const day1Spots = [
-      { name: "1. budget 租車", lat: 32.8364, lng: 130.8525 },
-      { name: "2. 🏴‍☠️ Sanji Statue", lat: 32.7931, lng: 130.8169, drive: "🚗 約 18 分鐘 (12.5 km)" },
-      { name: "3. 🏴‍☠️ Brook Statue", lat: 32.7169, lng: 130.8038, drive: "🚗 約 15 分鐘 (9.8 km)" },
-      { name: "4. 🏴‍☠️ Chopper Statue", lat: 32.7788, lng: 130.7511, drive: "🚗 約 15 分鐘 (8.2 km)" },
-      { name: "5. 🏴‍☠️ Rufi Statue", lat: 32.7894, lng: 130.7416, drive: "🚗 約 6 分鐘 (2.1 km)" },
-      { name: "6. 🏴‍☠️ Jinbe Statue", lat: 32.6953, lng: 130.6033, drive: "🚗 約 30 分鐘 (18.4 km)" },
-      { name: "7. 🛍️ AMU PLAZA", lat: 32.7898, lng: 130.6886, drive: "🚗 約 25 分鐘 (14.2 km)" },
-      { name: "8. 🏨 SOTETSU GRAND FRESA KUMAMOTO", lat: 32.8016, lng: 130.7078, drive: "🚗 約 10 分鐘 (3.1 km)" }
+      { name: "🚗 budget 租車", lat: 32.8364, lng: 130.8525, driveToNext: "約 18 分鐘 (12.5 km)" },
+      { name: "🏴‍☠️ Sanji Statue", lat: 32.7931, lng: 130.8169, driveToNext: "約 15 分鐘 (9.8 km)" },
+      { name: "🏴‍☠️ Brook Statue", lat: 32.7169, lng: 130.8038, driveToNext: "約 15 分鐘 (8.2 km)" },
+      { name: "🏴‍☠️ Chopper Statue", lat: 32.7788, lng: 130.7511, driveToNext: "約 6 分鐘 (2.1 km)" },
+      { name: "🏴‍☠️ Rufi Statue", lat: 32.7894, lng: 130.7416, driveToNext: "約 30 分鐘 (18.4 km)" },
+      { name: "🏴‍☠️ Jinbe Statue", lat: 32.6953, lng: 130.6033, driveToNext: "約 25 分鐘 (14.2 km)" },
+      { name: "🛍️ AMU PLAZA", lat: 32.7898, lng: 130.6886, driveToNext: "約 10 分鐘 (3.1 km)" },
+      { name: "🏨 SOTETSU GRAND FRESA KUMAMOTO", lat: 32.8016, lng: 130.7078 }
     ];
 
     // Day 2 景點資料
     const day2Spots = [
-      { name: "1. 🏯 熊本城 / 加藤神社 / 稻荷神社 / 城彩苑", lat: 32.8062, lng: 130.7058 },
-      { name: "2. 🏴‍☠️ Zoro Statue", lat: 32.8770, lng: 130.8681, drive: "🚗 約 40 分鐘 (22.5 km)" },
-      { name: "3. 🏴‍☠️ Nami Statue", lat: 32.7936, lng: 130.9022, drive: "🚗 約 15 分鐘 (9.3 km)" },
-      { name: "4. 🏴‍☠️ Robin Statue", lat: 32.8153, lng: 130.9575, drive: "🚗 約 25 分鐘 (14.1 km)" },
-      { name: "5. 🏴‍☠️ Franky Statue", lat: 32.8172, lng: 131.1215, drive: "🚗 約 25 分鐘 (15.8 km)" },
-      { name: "6. ⛩️ 上色見熊野座神社", lat: 32.8336, lng: 131.1683, drive: "🚗 約 10 分鐘 (5.2 km)" },
-      { name: "7. 🛍️ Montbell (備案)", lat: 32.8145, lng: 131.0258, drive: "🚗 約 25 分鐘 (14.6 km)" },
-      { name: "8. 🏡 阿蘇市民宿", lat: 32.9372, lng: 131.0478, drive: "🚗 約 20 分鐘 (16.0 km)" }
+      { name: "🏯 熊本城 / 加藤神社 / 稻荷神社 / 城彩苑", lat: 32.8062, lng: 130.7058, driveToNext: "約 40 分鐘 (22.5 km)" },
+      { name: "🏴‍☠️ Zoro Statue", lat: 32.8770, lng: 130.8681, driveToNext: "約 15 分鐘 (9.3 km)" },
+      { name: "🏴‍☠️ Nami Statue", lat: 32.7936, lng: 130.9022, driveToNext: "約 25 分鐘 (14.1 km)" },
+      { name: "🏴‍☠️ Robin Statue", lat: 32.8153, lng: 130.9575, driveToNext: "約 25 分鐘 (15.8 km)" },
+      { name: "🏴‍☠️ Franky Statue", lat: 32.8172, lng: 131.1215, driveToNext: "約 10 分鐘 (5.2 km)" },
+      { name: "⛩️ 上色見熊野座神社", lat: 32.8336, lng: 131.1683, driveToNext: "約 25 分鐘 (14.6 km)" },
+      { name: "🛍️ Montbell (備案)", lat: 32.8145, lng: 131.0258, driveToNext: "約 20 分鐘 (16.0 km)" },
+      { name: "🏡 阿蘇市民宿", lat: 32.9372, lng: 131.0478 }
     ];
 
     function openDayMap() {
@@ -1427,12 +1429,15 @@
 
       spotsData.forEach((spot, idx) => {
         latlngs.push([spot.lat, spot.lng]);
-        const marker = L.marker([spot.lat, spot.lng]).addTo(map).bindPopup(`<b>${spot.name}</b>`);
+        const marker = L.marker([spot.lat, spot.lng]).addTo(map).bindPopup(`<b>${idx + 1}. ${spot.name}</b>`);
         currentMarkers.push(marker);
 
+        // 景點標頭 (如: 1. 🚗 budget 租車)
         panelHtml += `<div class="drive-item"><span class="spot-dot">${idx + 1}</span> <b>${spot.name}</b></div>`;
-        if (spot.drive) {
-          panelHtml += `<div class="route-distance-info">${spot.drive}</div>`;
+
+        // 景點之間的車程與距離（顯示於兩景點中間一行）
+        if (spot.driveToNext) {
+          panelHtml += `<div class="route-distance-info">${spot.driveToNext}</div>`;
         }
       });
 
